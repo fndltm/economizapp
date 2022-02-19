@@ -1,0 +1,7 @@
+{
+  "name": "economizapp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
