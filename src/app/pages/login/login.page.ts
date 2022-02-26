@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/resources/services/firebase.service';
 
@@ -8,9 +9,12 @@ import { FirebaseService } from 'src/app/resources/services/firebase.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  hide = true;
 
-  public email: any;
-  public password: any;
+  form = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', Validators.required)
+  });
 
   constructor(
     public router: Router,
@@ -21,7 +25,10 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    this.firebaseService.loginWithEmail({ email: this.email, password: this.password }).then((userCredential: any) => {
+    this.firebaseService.loginWithEmail({
+      email: this.form.get('email').value,
+      password: this.form.get('password').value
+    }).then((userCredential: any) => {
       console.log(userCredential);
       if (userCredential.user.uid) {
         this.firebaseService.getDetails({ uid: userCredential.user.uid }).subscribe((user: any) => {

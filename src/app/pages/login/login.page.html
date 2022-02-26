@@ -1,27 +1,24 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
 <ion-content class="ion-padding">
-  <div class="form">
+  <form [formGroup]="form">
 
     <ion-item>
-      <ion-label position="stacked">Email</ion-label>
-      <ion-input [(ngModel)]='email'></ion-input>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email" required autofocus inputmode="email"></ion-input>
     </ion-item>
-    <br>
 
     <ion-item>
-      <ion-label position="stacked">Password</ion-label>
-      <ion-input [(ngModel)]='password'></ion-input>
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input formControlName="password" [type]="hide ? 'password' : 'text'" required></ion-input>
+      <ion-icon class="ion-align-self-center" slot="end" [name]="hide ? 'eye-outline' : 'eye-off-outline'"
+        (click)="hide = !hide"></ion-icon>
     </ion-item>
 
-    <ion-button (click)='login()' expand='block'>Login</ion-button>
-    <br>
+    <ion-button (click)="login()" expand="block" [disabled]="!form.invalid">Login</ion-button>
 
-    <h5 (click)='signup()'>Don't have account? <ion-text color='primary'>signup here</ion-text>
+    <h5 (click)='signup()'>
+      Don't have account?
+      <ion-text color='primary'>signup here</ion-text>
     </h5>
 
-  </div>
+  </form>
 </ion-content>

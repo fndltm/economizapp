@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('../fonts/Comfortaa-Regular.ttf');
+}
+
+:root {
+  --ion-default-font: Comfortaa, Roboto, "Helvetica Neue", sans-serif !important;
+}
