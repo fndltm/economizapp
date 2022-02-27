@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { from } from 'rxjs';
 import { AuthenticationService } from 'src/app/resources/services/authentication.service';
-import { ToastService } from 'src/app/resources/services/toast.service';
 import { UtilsService } from 'src/app/resources/services/utils.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
-    private toastService: ToastService,
+    private toast: HotToastService,
     public utilsService: UtilsService
   ) { }
 
@@ -35,13 +35,12 @@ export class LoginPage implements OnInit {
     }
 
     const { email, password } = this.form.value;
-    this.authService.login(email, password).subscribe(
-      res => {
-        this.router.navigate(['/home']);
-      },
-      error => {
-        this.toastService.showErrorToast('Email ou senha incorretos!');
-      }
-    );
+    this.authService.login(email, password).pipe(
+      this.toast.observe({
+        success: 'Logado com sucesso!',
+        loading: 'Carregando...',
+        error: 'Login ou senha inválidos!'
+      })
+    ).subscribe(() => this.router.navigate(['/home']));
   }
 }

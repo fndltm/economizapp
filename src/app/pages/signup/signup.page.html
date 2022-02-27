@@ -1,27 +1,44 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>signup</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding content">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="name" required autofocus inputmode="text"></ion-input>
+      <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'name')">Campo obrigatório</span>
+    </ion-item>
 
-<ion-content class="ion-pading">
-  <div class="form">
     <ion-item>
-      <ion-label position="stacked">Name</ion-label>
-      <ion-input [(ngModel)]='name'></ion-input>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email" required inputmode="email"></ion-input>
+      <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'email')">Campo obrigatório</span>
+      <span slot="error" *ngIf="form.get('email').errors?.email">Email inválido</span>
     </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Email</ion-label>
-      <ion-input [(ngModel)]='email'></ion-input>
+
+    <ion-item class="ion-margin-vertical">
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input formControlName="password" [type]="hidePassword ? 'password' : 'text'" required></ion-input>
+      <ion-icon class="ion-align-self-center" slot="end" [name]="hidePassword ? 'eye-outline' : 'eye-off-outline'"
+        (click)="hidePassword = !hidePassword"></ion-icon>
+      <span slot="error" *ngIf="form.get('required')?.errors?.minlength">Campo obrigatório</span>
+      <span slot="error" *ngIf="form.get('password')?.errors?.minlength">A senha deve conter no mínimo 6 dígitos</span>
     </ion-item>
-    <br>
-    <ion-item>
-      <ion-label position="stacked">Password</ion-label>
-      <ion-input [(ngModel)]='password'></ion-input>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Confirmar senha</ion-label>
+      <ion-input formControlName="confirmPassword" [type]="hideConfirmPassword ? 'password' : 'text'" required>
+      </ion-input>
+      <ion-icon class="ion-align-self-center" slot="end"
+        [name]="hideConfirmPassword ? 'eye-outline' : 'eye-off-outline'"
+        (click)="hideConfirmPassword = !hideConfirmPassword"></ion-icon>
     </ion-item>
-    <ion-button (click)='signup()' expand='block'>Signup</ion-button>
-  </div>
+
+    <span class="text-danger" *ngIf="form.errors?.passwordsDontMatch">As senhas não coincidem!</span>
+
+    <ion-button class="ion-margin-vertical" expand="block" type="submit" [disabled]="form.invalid">Cadastrar
+    </ion-button>
+
+    <h6>
+      Já tem uma conta?
+      <a routerLink="/login" color="success">Entrar</a>
+    </h6>
+  </form>
 </ion-content>
