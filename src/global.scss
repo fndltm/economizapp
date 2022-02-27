@@ -34,5 +34,13 @@ body {
 
 body {
   margin: 0;
-  font-family: Comfortaa, Roboto, "Helvetica Neue", sans-serif;
+}
+
+.pacifico-font {
+  font-family: var(--pacifico-font) !important;
+  font-size: 2rem !important;
+}
+
+.text-white {
+  color: white !important;
 }

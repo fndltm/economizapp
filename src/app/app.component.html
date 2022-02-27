@@ -1,5 +1,8 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
+    <ion-content>
+      <ng-container *ngIf="authService.currentUser$ | async as user"></ng-container>
+    </ion-content>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>

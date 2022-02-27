@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FirebaseService } from 'src/app/resources/services/firebase.service';
+import { from } from 'rxjs';
+import { AuthenticationService } from 'src/app/resources/services/authentication.service';
+import { ToastService } from 'src/app/resources/services/toast.service';
+import { UtilsService } from 'src/app/resources/services/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -12,41 +15,33 @@ export class LoginPage implements OnInit {
   hide = true;
 
   form = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   });
 
   constructor(
-    public router: Router,
-    public firebaseService: FirebaseService
+    private router: Router,
+    private authService: AuthenticationService,
+    private toastService: ToastService,
+    public utilsService: UtilsService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  login() {
-    this.firebaseService.loginWithEmail({
-      email: this.form.get('email').value,
-      password: this.form.get('password').value
-    }).then((userCredential: any) => {
-      console.log(userCredential);
-      if (userCredential.user.uid) {
-        this.firebaseService.getDetails({ uid: userCredential.user.uid }).subscribe((user: any) => {
-          console.log(user);
-          alert('Welcome ' + user.name);
-        }, err => {
-          console.log(err);
-        });
+  submit(): void {
+    if (!this.form.valid) {
+      return;
+    }
+
+    const { email, password } = this.form.value;
+    this.authService.login(email, password).subscribe(
+      res => {
+        this.router.navigate(['/home']);
+      },
+      error => {
+        this.toastService.showErrorToast('Email ou senha incorretos!');
       }
-    }, err => {
-      alert(err.message);
-      console.log(err);
-    });
+    );
   }
-
-
-  signup() {
-    this.router.navigateByUrl('signup');
-  }
-
 }

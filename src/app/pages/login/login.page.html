@@ -1,24 +1,26 @@
-<ion-content class="ion-padding">
-  <form [formGroup]="form">
+<ion-content class="ion-padding content">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-text color="white" class="ion-margin-bottom pacifico-font">Economizapp</ion-text>
 
     <ion-item>
       <ion-label position="floating">Email</ion-label>
       <ion-input formControlName="email" required autofocus inputmode="email"></ion-input>
+      <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'email')">Campo obrigatório</span>
     </ion-item>
 
-    <ion-item>
+    <ion-item class="ion-margin-vertical">
       <ion-label position="floating">Senha</ion-label>
       <ion-input formControlName="password" [type]="hide ? 'password' : 'text'" required></ion-input>
       <ion-icon class="ion-align-self-center" slot="end" [name]="hide ? 'eye-outline' : 'eye-off-outline'"
         (click)="hide = !hide"></ion-icon>
+      <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'password')">Campo obrigatório</span>
     </ion-item>
 
-    <ion-button (click)="login()" expand="block" [disabled]="!form.invalid">Login</ion-button>
+    <ion-button class="ion-margin-vertical" expand="block" type="submit" [disabled]="form.invalid">Login</ion-button>
 
-    <h5 (click)='signup()'>
-      Don't have account?
-      <ion-text color='primary'>signup here</ion-text>
-    </h5>
-
+    <h6>
+      Não tem uma conta?
+      <a routerLink="/sign-up" color="success">Cadastre-se.</a>
+    </h6>
   </form>
 </ion-content>

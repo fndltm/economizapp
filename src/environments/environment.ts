@@ -5,13 +5,14 @@
 export const environment = {
   production: false,
   firebase: {
+    projectId: 'economizapp-5009c',
+    appId: '1:587427969321:web:195488a90224cae42adf38',
+    storageBucket: 'economizapp-5009c.appspot.com',
+    locationId: 'southamerica-east1',
     apiKey: 'AIzaSyD7MJV8S6PB2wdGtaF5kTivuu-Pu78UW4k',
     authDomain: 'economizapp-5009c.firebaseapp.com',
-    projectId: 'economizapp-5009c',
-    storageBucket: 'economizapp-5009c.appspot.com',
     messagingSenderId: '587427969321',
-    appId: '1:587427969321:web:6397548c5481e7c52adf38',
-    measurementId: 'G-K6NP2QJZ9L'
+    measurementId: 'G-HTL25DN573',
   }
 };
 
