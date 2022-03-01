@@ -1,0 +1,35 @@
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+
+    ion-avatar {
+      .person-icon {
+        fill: var(--ion-text-color);
+      }
+    }
+
+    ion-fab,
+    ion-fab-button {
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+
+      ion-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+      }
+    }
+  }
+}

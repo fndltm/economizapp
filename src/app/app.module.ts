@@ -1,3 +1,4 @@
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -6,12 +7,13 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { HotToastModule } from '@ngneat/hot-toast';
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HotToastModule } from '@ngneat/hot-toast';
 import { HomePage } from './pages/home/home.page';
+import { InterceptorService } from './resources/interceptors/http.interceptor';
 
 @NgModule({
   declarations: [
@@ -27,13 +29,19 @@ import { HomePage } from './pages/home/home.page';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
-    HotToastModule.forRoot()
+    HotToastModule.forRoot(),
+    HttpClientModule
   ],
   providers: [
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

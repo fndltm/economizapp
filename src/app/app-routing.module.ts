@@ -8,14 +8,9 @@ import {
 import { HomePage } from './pages/home/home.page';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-const redirectLoggedInToHome = () => redirectLoggedInTo(['home']);
+const redirectLoggedInToHome = () => redirectLoggedInTo(['']);
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
@@ -27,7 +22,7 @@ const routes: Routes = [
     ...canActivate(redirectLoggedInToHome),
   },
   {
-    path: 'home',
+    path: '',
     component: HomePage,
     ...canActivate(redirectUnauthorizedToLogin),
     children: [
@@ -38,6 +33,7 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule),
+            ...canActivate(redirectUnauthorizedToLogin),
           }
         ]
       }

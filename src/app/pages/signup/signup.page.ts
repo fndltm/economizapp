@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
-import { switchMap } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/resources/services/authentication.service';
 import { UsersService } from 'src/app/resources/services/users.service';
 import { UtilsService } from 'src/app/resources/services/utils.service';
@@ -64,11 +64,9 @@ export class SignupPage implements OnInit {
           success: 'Cadastrado com sucesso!',
           loading: 'Carregando...',
           error: ({ message }) => message
-        })
-      )
-      .subscribe(() => {
-        this.router.navigate(['/login']);
-      });
+        }),
+        finalize(() => this.utilsService.setLoading(false))
+      ).subscribe(() => this.router.navigate(['/login']));
   }
 
 }

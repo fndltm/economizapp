@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { from } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/resources/services/authentication.service';
 import { UtilsService } from 'src/app/resources/services/utils.service';
 
@@ -37,10 +38,13 @@ export class LoginPage implements OnInit {
     const { email, password } = this.form.value;
     this.authService.login(email, password).pipe(
       this.toast.observe({
-        success: 'Logado com sucesso!',
         loading: 'Carregando...',
         error: 'Login ou senha inválidos!'
+      }),
+      finalize(() => {
+        this.toast.close();
+        this.utilsService.setLoading(false);
       })
-    ).subscribe(() => this.router.navigate(['/home']));
+    ).subscribe(() => this.router.navigate(['']));
   }
 }
