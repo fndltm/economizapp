@@ -1,0 +1,42 @@
+<ion-content>
+  <div class="header">
+    <ion-text color="white" class="ion-margin-bottom pacifico-font">Economizapp</ion-text>
+  </div>
+
+  <div class="" *ngIf="promo">
+    <ion-card>
+      <ion-card-header>
+        <div class="promo-store">
+          {{ promo.store }}
+        </div>
+        <div class="promo-product">
+          {{ promo.product }}
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="promo-img">
+          <img width="128" height="128" src="../../../assets/icon/product.png"/>
+        </div>
+        <div class="promo-price">
+          R${{ promo.price }}
+        </div>
+        <div class="promo-info">
+          <div class="">{{ promo.address }}</div>
+          <div class="">{{ promo.observation }}</div>
+        </div>
+        <div class="promo-footer">
+          <div class="promo-likes">
+            <ion-icon size="large" name="heart-circle-outline"></ion-icon>
+            <div class="promo-likes-qtt">{{ promo.likes }}</div>
+          </div>
+          <div class="promo-address">
+            <ion-button size="small">Curtir</ion-button>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
+

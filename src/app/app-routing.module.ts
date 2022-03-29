@@ -36,6 +36,28 @@ const routes: Routes = [
             ...canActivate(redirectUnauthorizedToLogin),
           }
         ]
+      },
+      {
+        path: 'promos',
+        ...canActivate(redirectUnauthorizedToLogin),
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./pages/promos/promos.module').then(m => m.PromosPageModule),
+            ...canActivate(redirectUnauthorizedToLogin),
+          }
+        ]
+      },
+      {
+        path: 'promo',
+        ...canActivate(redirectUnauthorizedToLogin),
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./pages/promo/promo.module').then(m => m.PromoPageModule),
+            ...canActivate(redirectUnauthorizedToLogin),
+          }
+        ]
       }
     ]
   },

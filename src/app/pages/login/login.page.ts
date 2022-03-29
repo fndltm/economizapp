@@ -45,6 +45,6 @@ export class LoginPage implements OnInit {
         this.toast.close();
         this.utilsService.setLoading(false);
       })
-    ).subscribe(() => this.router.navigate(['']));
+    ).subscribe(() => this.router.navigate(['/promos']));
   }
 }

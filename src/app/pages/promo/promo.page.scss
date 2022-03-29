@@ -1,0 +1,55 @@
+.header {
+  padding-left: 15px;
+}
+
+.promo-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  margin: 20px 0px;
+}
+
+.promo-price {
+  color: red;
+  font-size: 21px;
+}
+
+.promo-info {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px 0;
+}
+
+.promo-store {
+  font-size: 13px;
+}
+
+.promo-product {
+  padding-top: 5px;
+  font-size: 18px;
+  color: white;
+}
+
+.promo-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid #999999;
+  margin-top: 5px;
+  padding-top: 10px;
+
+  .promo-likes {
+    display: flex;
+    justify-content: center;
+    align-items: center;;
+    gap: 5px;
+
+    .promo-likes-qtt {
+      padding-top: 4px;
+    }
+  }
+}
