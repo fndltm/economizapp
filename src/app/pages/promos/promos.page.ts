@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PromoService } from 'src/app/resources/services/promo.service';
@@ -31,7 +32,26 @@ export class PromosPage implements OnInit {
         price: 0.90,
         address: 'BH Shopping, BR-356, 3049 - Belvedere, Belo Horizonte - MG, 30320-900',
         category: 'Alimentação',
-        likes: 5
+        likes: 5,
+        createdAt: '2015-03-25T12:00:00Z',
+        createdBy: 'Raywam Shinkoda',
+        active: true,
+        comments: [{
+          uid: 'osdsdsd3323',
+          firstName: 'Ana',
+          lastName: 'Silva',
+          comment: 'Obrigada por compartilhar a promoção.',
+          createdAt: '2015-03-25T12:00:00Z',
+          likes: 5
+        },
+        {
+          uid: 'osdsdsd3323',
+          firstName: 'Ricardo',
+          lastName: 'Soares',
+          comment: 'A promoção acabou.',
+          createdAt: '2015-03-25T12:00:00Z',
+          likes: 5
+        }]
       },
       {
         uid: '5fddd554',
@@ -40,7 +60,10 @@ export class PromosPage implements OnInit {
         price: 1.89,
         address: 'BH Shopping, BR-356, 3049 - Belvedere, Belo Horizonte - MG, 30320-900',
         category: 'Alimentação',
-        likes: 4
+        likes: 4,
+        createdAt: '2022-03-25T12:00:00Z',
+        createdBy: 'Raywam Shinkoda',
+        active: true
       },
       {
         uid: '5fddd554',
@@ -50,9 +73,16 @@ export class PromosPage implements OnInit {
         address: 'BH Shopping, BR-356, 3049 - Belvedere, Belo Horizonte - MG, 30320-900',
         category: 'Alimentação',
         likes: 3,
-        observation: 'O produto está na frente do caixa 3. Aparentemente não vão repor.'
+        observation: 'O produto está na frente do caixa 3. Aparentemente não vão repor.',
+        createdAt: '2022-03-30T13:00:00Z',
+        createdBy: 'Raywam Shinkoda',
+        active: true
       }
     ]
+  }
+
+  public formatDate(date) {
+    return formatDate(date, 'dd/MM/yyyy', 'en-US')
   }
 
   goToPromo(promo) {

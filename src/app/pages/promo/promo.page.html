@@ -1,7 +1,9 @@
 <ion-content>
-  <div class="header">
-    <ion-text color="white" class="ion-margin-bottom pacifico-font">Economizapp</ion-text>
-  </div>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title class="header">Economizapp</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
   <div class="" *ngIf="promo">
     <ion-card>
@@ -18,12 +20,14 @@
         <div class="promo-img">
           <img width="128" height="128" src="../../../assets/icon/product.png"/>
         </div>
-        <div class="promo-price">
-          R${{ promo.price }}
+        <div class="promo-body">
+          <div class="promo-price">R${{ promo.price }}</div>
+          <div class="promo-date">{{ formatDate(promo.createdAt) }}</div>
         </div>
         <div class="promo-info">
           <div class="">{{ promo.address }}</div>
           <div class="">{{ promo.observation }}</div>
+          <div class="promo-created-by">Publicado por: {{ promo.createdBy }}</div>
         </div>
         <div class="promo-footer">
           <div class="promo-likes">
@@ -36,6 +40,8 @@
         </div>
       </ion-card-content>
     </ion-card>
+
+    <app-comments [comments]="promo.comments"></app-comments>
   </div>
 
 </ion-content>

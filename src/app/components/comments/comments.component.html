@@ -1,0 +1,42 @@
+<div class="commets" *ngIf="comments">
+  <ion-card>
+    <ion-card-header>
+      <div class="promo-store">
+        Comentários
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <form >
+        <ion-item class="ion-margin-bottom comment-input">
+          <ion-textarea maxlength="100" [formControl]="comment" placeholder="Deixe seu comentário" required inputmode="text"></ion-textarea>
+        </ion-item>
+        <div class="comment-send" *ngIf="comment.valid">
+          <div class="comment-address">
+            <ion-button size="small" (click)="submit()">Enviar</ion-button>
+          </div>
+        </div>
+      </form>
+
+      <div class="comment" *ngFor="let comment of comments">
+        <div class="comment-title">
+          <div class="comment-author">{{ comment.firstName + ' ' + comment.lastName }}</div>
+          <div class="comment-date">{{ formatDate(comment.createdAt) }}</div>
+        </div>
+        <div class="comment-info">
+          <div class="">{{ comment.comment }}</div>
+        </div>
+        <div class="comment-footer">
+          <div class="comment-likes">
+            <ion-icon size="large" name="heart-circle-outline"></ion-icon>
+            <div class="comment-likes-qtt">{{ comment.likes }}</div>
+          </div>
+          <div class="comment-address">
+            <ion-button size="small">Curtir</ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>

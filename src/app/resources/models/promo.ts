@@ -1,3 +1,5 @@
+import { Comment } from './comment';
+
 export interface Promo {
   uid: string;
   product?: string;
@@ -7,4 +9,8 @@ export interface Promo {
   category?: string;
   likes?: number;
   observation?: string;
+  createdAt?: string;
+  createdBy?: string;
+  active?: boolean;
+  comments?: Comment[]
 }

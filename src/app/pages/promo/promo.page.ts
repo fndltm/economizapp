@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PromoService } from 'src/app/resources/services/promo.service';
 import { Promo } from '../../resources/models/promo';
@@ -23,5 +24,9 @@ export class PromoPage implements OnInit {
 
   promoObserve() {
     this.promoService.promo$.subscribe(res => this.promo = res);
+  }
+
+  public formatDate(date) {
+    return formatDate(date, 'dd/MM/yyyy', 'en-US')
   }
 }

@@ -1,10 +1,16 @@
-.header {
-  padding-left: 15px;
-}
+.promo-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-.promo-price {
-  color: red;
-  font-size: 21px;
+  .promo-price {
+    color: red;
+    font-size: 21px;
+  }
+
+  .promo-date {
+    font-size: 12px;
+  }
 }
 
 .promo-store {

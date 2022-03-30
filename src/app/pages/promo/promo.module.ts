@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { PromoPageRoutingModule } from './promo-routing.module';
 import { PromoPage } from './promo.page';
+import { CommentsComponent } from 'src/app/components/comments/comments.component';
 
 
 @NgModule({
@@ -13,8 +14,9 @@ import { PromoPage } from './promo.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    PromoPageRoutingModule
+    PromoPageRoutingModule,
+    ReactiveFormsModule,
   ],
-  declarations: [PromoPage]
+  declarations: [PromoPage, CommentsComponent]
 })
 export class PromoPageModule {}
