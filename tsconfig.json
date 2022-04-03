@@ -12,7 +12,36 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
-    "lib": ["es2018", "dom"]
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "@assets/*": [
+        "./src/assets/*"
+      ],
+      "@styles/*": [
+        "./src/assets/scss/*"
+      ],
+      "@enums/*": [
+        "./src/app/resources/enums/*"
+      ],
+      "@dto/*": [
+        "./src/app/resources/dto/*"
+      ],
+      "@classes/*": [
+        "./src/app/resources/classes/*"
+      ],
+      "@models/*": [
+        "./src/app/resources/models/*"
+      ],
+      "@services/*": [
+        "./src/app/resources/services/*"
+      ],
+      "@utils/*": [
+        "./src/app/resources/utils/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

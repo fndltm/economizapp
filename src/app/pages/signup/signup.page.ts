@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { AuthenticationService } from '@services/authentication.service';
+import { UsersService } from '@services/users.service';
+import { UtilsService } from '@utils/utils.service';
 import { finalize, switchMap } from 'rxjs/operators';
-import { AuthenticationService } from 'src/app/resources/services/authentication.service';
-import { UsersService } from 'src/app/resources/services/users.service';
-import { UtilsService } from 'src/app/resources/services/utils.service';
 
 export function passwordsMatchValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -31,7 +31,7 @@ export class SignupPage implements OnInit {
   hideConfirmPassword = true;
 
   form = new FormGroup({
-    name: new FormControl('', Validators.required),
+    displayName: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     confirmPassword: new FormControl('', Validators.required),
@@ -53,12 +53,12 @@ export class SignupPage implements OnInit {
       return;
     }
 
-    const { name, email, password } = this.form.value;
+    const { displayName, email, password } = this.form.value;
     this.authService
       .signUp(email, password)
       .pipe(
         switchMap(({ user: { uid } }) =>
-          this.usersService.addUser({ uid, email, displayName: name })
+          this.usersService.add({ uid, email, displayName })
         ),
         this.toast.observe({
           success: 'Cadastrado com sucesso!',
@@ -66,7 +66,7 @@ export class SignupPage implements OnInit {
           error: ({ message }) => message
         }),
         finalize(() => this.utilsService.setLoading(false))
-      ).subscribe(() => this.router.navigate(['/login']));
+      ).subscribe(() => this.router.navigate(['']));
   }
 
 }

@@ -1,0 +1,19 @@
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+
+    ion-avatar {
+      .person-icon {
+        fill: var(--ion-text-color);
+      }
+    }
+  }
+}

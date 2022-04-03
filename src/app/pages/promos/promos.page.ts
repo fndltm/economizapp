@@ -20,7 +20,6 @@ export class PromosPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.promos)
   }
 
   getPromos() {
@@ -78,16 +77,16 @@ export class PromosPage implements OnInit {
         createdBy: 'Raywam Shinkoda',
         active: true
       }
-    ]
+    ];
   }
 
   public formatDate(date) {
-    return formatDate(date, 'dd/MM/yyyy', 'en-US')
+    return formatDate(date, 'dd/MM/yyyy', 'en-US');
   }
 
   goToPromo(promo) {
-    this.promoService.setPromo(promo)
-    this.router.navigate(['/promo'])
+    this.promoService.setPromo(promo);
+    this.router.navigate(['/promo']);
   }
 
 }

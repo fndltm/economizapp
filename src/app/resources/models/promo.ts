@@ -12,5 +12,5 @@ export interface Promo {
   createdAt?: string;
   createdBy?: string;
   active?: boolean;
-  comments?: Comment[]
+  comments?: Comment[];
 }

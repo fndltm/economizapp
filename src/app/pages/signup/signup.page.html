@@ -1,9 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastrar conta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="submit()">
     <ion-item class="ion-margin-bottom">
-      <ion-label position="floating">Nome</ion-label>
-      <ion-input formControlName="name" required autofocus inputmode="text"></ion-input>
-      <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'name')">Campo obrigatório</span>
+      <ion-label position="floating">Apelido</ion-label>
+      <ion-input formControlName="displayName" required autofocus inputmode="text"></ion-input>
+      <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'displayName')">Campo obrigatório</span>
     </ion-item>
 
     <ion-item>

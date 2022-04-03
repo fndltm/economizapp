@@ -5,62 +5,52 @@ import {
   redirectLoggedInTo,
   redirectUnauthorizedTo,
 } from '@angular/fire/auth-guard';
-import { HomePage } from './pages/home/home.page';
+import { ProfileComponent } from './pages/account/profile/profile.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-const redirectLoggedInToHome = () => redirectLoggedInTo(['']);
+const redirectLoggedInToPromos = () => redirectLoggedInTo(['promos']);
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'promos',
+    pathMatch: 'full'
+  },
+  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
-    ...canActivate(redirectLoggedInToHome),
   },
   {
     path: 'sign-up',
     loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupPageModule),
-    ...canActivate(redirectLoggedInToHome),
   },
   {
-    path: '',
-    component: HomePage,
-    ...canActivate(redirectUnauthorizedToLogin),
+    path: 'promos',
     children: [
       {
-        path: 'profile',
-        ...canActivate(redirectUnauthorizedToLogin),
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule),
-            ...canActivate(redirectUnauthorizedToLogin),
-          }
-        ]
+        path: '',
+        loadChildren: () => import('./pages/promos/promos.module').then(m => m.PromosPageModule)
       },
       {
-        path: 'promos',
-        ...canActivate(redirectUnauthorizedToLogin),
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('./pages/promos/promos.module').then(m => m.PromosPageModule),
-            ...canActivate(redirectUnauthorizedToLogin),
-          }
-        ]
-      },
-      {
-        path: 'promo',
-        ...canActivate(redirectUnauthorizedToLogin),
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('./pages/promo/promo.module').then(m => m.PromoPageModule),
-            ...canActivate(redirectUnauthorizedToLogin),
-          }
-        ]
+        path: ':uid',
+        loadChildren: () => import('./pages/promo/promo.module').then(m => m.PromoPageModule)
       }
     ]
   },
+  {
+    path: 'account',
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./pages/account/account.module').then(m => m.AccountPageModule)
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        ...canActivate(redirectUnauthorizedToLogin),
+      }
+    ]
+  }
 ];
 
 @NgModule({

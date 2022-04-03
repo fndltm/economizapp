@@ -12,13 +12,11 @@ import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomePage } from './pages/home/home.page';
 import { InterceptorService } from './resources/interceptors/http.interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HomePage
+    AppComponent
   ],
   entryComponents: [],
   imports: [

@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PromoService } from 'src/app/resources/services/promo.service';
+import { PromoService } from '@services/promo.service';
 import { Promo } from '../../resources/models/promo';
 
 @Component({
@@ -9,17 +9,17 @@ import { Promo } from '../../resources/models/promo';
   styleUrls: ['./promo.page.scss'],
 })
 export class PromoPage implements OnInit {
-  public promo : Promo;
+  public promo: Promo;
 
   constructor(
-    private promoService : PromoService
+    private promoService: PromoService
   ) {
-    console.log(this.promo)
+    console.log(this.promo);
   }
 
   ngOnInit() {
-    this.promoObserve()
-    console.log(this.promo)
+    this.promoObserve();
+    console.log(this.promo);
   }
 
   promoObserve() {
@@ -27,6 +27,6 @@ export class PromoPage implements OnInit {
   }
 
   public formatDate(date) {
-    return formatDate(date, 'dd/MM/yyyy', 'en-US')
+    return formatDate(date, 'dd/MM/yyyy', 'pt-BR');
   }
 }

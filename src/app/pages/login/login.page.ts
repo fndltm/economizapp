@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
-import { from } from 'rxjs';
+import { AuthenticationService } from '@services/authentication.service';
+import { UtilsService } from '@utils/utils.service';
 import { finalize } from 'rxjs/operators';
-import { AuthenticationService } from 'src/app/resources/services/authentication.service';
-import { UtilsService } from 'src/app/resources/services/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -21,14 +19,12 @@ export class LoginPage implements OnInit {
   });
 
   constructor(
-    private router: Router,
     private authService: AuthenticationService,
     private toast: HotToastService,
     public utilsService: UtilsService
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   submit(): void {
     if (!this.form.valid) {
@@ -38,13 +34,13 @@ export class LoginPage implements OnInit {
     const { email, password } = this.form.value;
     this.authService.login(email, password).pipe(
       this.toast.observe({
+        success: 'Logado com sucesso',
         loading: 'Carregando...',
         error: 'Login ou senha inválidos!'
       }),
       finalize(() => {
-        this.toast.close();
         this.utilsService.setLoading(false);
       })
-    ).subscribe(() => this.router.navigate(['/promos']));
+    ).subscribe();
   }
 }

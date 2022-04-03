@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { UtilsService } from './resources/services/utils.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { UtilsService } from '@utils/utils.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -7,8 +8,15 @@ import { UtilsService } from './resources/services/utils.service';
 })
 export class AppComponent {
   isLoading = false;
+  isLoginPage;
 
-  constructor(public utilsService: UtilsService) {
+  constructor(router: Router, public utilsService: UtilsService) {
     this.utilsService.isLoading.subscribe(loading => this.isLoading = loading);
+
+    router.events.subscribe(val => {
+      if (val instanceof NavigationEnd) {
+        this.isLoginPage = val.url.includes('login');
+      }
+    });
   }
 }
