@@ -11,8 +11,8 @@
     </ion-fab-button>
   </ion-fab>
 
-  <div class="" *ngFor="let promo of promos">
-    <ion-card (click)="goToPromo(promo)">
+  <div *ngFor="let promo of promos">
+    <ion-card>
       <ion-card-header>
         <div class="promo-store">
           {{ promo.store }}
@@ -29,7 +29,9 @@
         </div>
         <div class="promo-footer">
           <div class="promo-likes">
-            <ion-icon size="large" name="heart-circle-outline"></ion-icon>
+            <ion-icon size="large" [color]="promo.liked ? 'danger' : ''" name="heart-circle-outline"
+              (click)="togglePromoLike(promo)">
+            </ion-icon>
             <div class="promo-likes-qtt">{{ promo.likes }}</div>
           </div>
           <div class="promo-address">
@@ -39,5 +41,10 @@
       </ion-card-content>
     </ion-card>
   </div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>

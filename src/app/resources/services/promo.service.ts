@@ -10,7 +10,7 @@ export class PromoService extends BaseService<Promo> {
   @Output() promo$ = new EventEmitter<Promo>();
 
   constructor(public firestore: Firestore) {
-    super(firestore, 'promo');
+    super(firestore, 'promos');
   }
 
   setPromo(promo) {

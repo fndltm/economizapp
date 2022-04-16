@@ -1,16 +1,20 @@
+import { PromoStatus } from '@enums/promo-status';
+import { Timestamp } from 'firebase/firestore';
 import { Comment } from './comment';
 
 export interface Promo {
-  uid: string;
-  product?: string;
-  store?: string;
-  price?: number;
+  uid?: string;
   address?: string;
   category?: string;
+  createdAt?: Timestamp;
+  createdBy?: string;
+  liked?: boolean;
   likes?: number;
   observation?: string;
-  createdAt?: string;
-  createdBy?: string;
-  active?: boolean;
+  photo: string;
+  price?: number;
+  product?: string;
+  status?: PromoStatus;
+  store?: string;
   comments?: Comment[];
 }
