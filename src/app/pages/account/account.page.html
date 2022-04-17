@@ -1,7 +1,7 @@
 <ng-container *ngIf="userProfile$ | async as user; else createAccount">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Minha conta</ion-title>
+      <ion-title class="header">Minha conta</ion-title>
       <ion-buttons slot="end">
         <ion-button color="danger" fill="clear" shape="round" (click)="logout()">
           <ion-icon name="log-out-outline"></ion-icon>

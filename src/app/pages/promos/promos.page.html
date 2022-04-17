@@ -1,7 +1,7 @@
 <ion-content>
   <ion-header>
     <ion-toolbar>
-      <ion-title class="header">Economizapp</ion-title>
+      <ion-title class="header">Promoções</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -12,7 +12,9 @@
   </ion-fab>
 
   <div *ngFor="let promo of promos">
-    <ion-card>
+    <ion-card class="ion-activatable ripple-parent" (click)="navigateToPromo(promo)">
+      <ion-ripple-effect></ion-ripple-effect>
+
       <ion-card-header>
         <div class="promo-store">
           {{ promo.store }}
@@ -29,21 +31,20 @@
         </div>
         <div class="promo-footer">
           <div class="promo-likes">
-            <ion-icon size="large" [color]="promo.liked ? 'danger' : ''" name="heart-circle-outline"
-              (click)="togglePromoLike(promo)">
-            </ion-icon>
+            <ion-icon slot="icon-only" [color]="promo.liked ? 'danger' : 'medium'" size="large" name="heart-circle-outline"
+              (click)="togglePromoLike($event, promo)"></ion-icon>
             <div class="promo-likes-qtt">{{ promo.likes }}</div>
           </div>
           <div class="promo-address">
-            <ion-button size="small">Ver endereço</ion-button>
+            <ion-button size="small" [routerLink]="[promo.uid]">Ver endereço</ion-button>
           </div>
         </div>
       </ion-card-content>
     </ion-card>
   </div>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+  <ion-infinite-scroll (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

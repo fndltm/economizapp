@@ -9,21 +9,12 @@ import { Promo } from '../../resources/models/promo';
   styleUrls: ['./promo.page.scss'],
 })
 export class PromoPage implements OnInit {
-  public promo: Promo;
-
   constructor(
     private promoService: PromoService
   ) {
-    console.log(this.promo);
   }
 
   ngOnInit() {
-    this.promoObserve();
-    console.log(this.promo);
-  }
-
-  promoObserve() {
-    this.promoService.promo$.subscribe(res => this.promo = res);
   }
 
   public formatDate(date) {
