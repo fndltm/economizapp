@@ -1,12 +1,10 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Timestamp } from 'firebase/firestore';
 import { PromoService } from 'src/app/resources/services/promo.service';
 import { Promo } from '../../resources/models/promo';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-promos',
   templateUrl: './promos.page.html',
   styleUrls: ['./promos.page.scss'],
 })
@@ -48,12 +46,7 @@ export class PromosPage implements OnInit {
     }, 500);
   }
 
-  public formatDate(date: Timestamp): string {
-    return formatDate(new Date(date.seconds), 'dd/MM/yyyy', 'en-US');
-  }
-
   togglePromoLike(event: Event, promo: Promo): void {
-
     const p = { ...promo };
     p.liked = !p.liked;
     if (p.liked) { p.likes++; }

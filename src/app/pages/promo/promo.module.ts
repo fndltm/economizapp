@@ -6,7 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { PromoPageRoutingModule } from './promo-routing.module';
 import { PromoPage } from './promo.page';
-import { CommentsComponent } from 'src/app/components/comments/comments.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -16,7 +17,10 @@ import { CommentsComponent } from 'src/app/components/comments/comments.componen
     IonicModule,
     PromoPageRoutingModule,
     ReactiveFormsModule,
+    GoogleMapsModule,
+    HttpClientModule,
+    HttpClientJsonpModule
   ],
-  declarations: [PromoPage, CommentsComponent]
+  declarations: [PromoPage]
 })
-export class PromoPageModule {}
+export class PromoPageModule { }

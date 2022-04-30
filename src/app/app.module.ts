@@ -1,5 +1,6 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -13,6 +14,10 @@ import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InterceptorService } from './resources/interceptors/http.interceptor';
+
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt, 'pt');
 
 @NgModule({
   declarations: [
@@ -28,7 +33,6 @@ import { InterceptorService } from './resources/interceptors/http.interceptor';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     HotToastModule.forRoot(),
-    HttpClientModule
   ],
   providers: [
     {
@@ -39,6 +43,14 @@ import { InterceptorService } from './resources/interceptors/http.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorService,
       multi: true,
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt'
+    },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'BRL'
     },
   ],
   bootstrap: [AppComponent],

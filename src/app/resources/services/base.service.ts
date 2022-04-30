@@ -30,7 +30,7 @@ export class BaseService<T extends { uid?: string }> {
   }
 
   getByUid(uid: string): Observable<T | null> {
-    return docData(doc(this.firestore, this.collectionName, uid)) as Observable<T>;
+    return docData(doc(this.firestore, this.collectionName, uid), { idField: 'uid' }) as Observable<T>;
   }
 
   add(data: T): Observable<DocumentReference<DocumentData>> {

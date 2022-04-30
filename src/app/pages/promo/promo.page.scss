@@ -1,3 +1,21 @@
+ion-content {
+  --offset-bottom: auto !important;
+  --overflow: hidden;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+input,
+textarea {
+  background: var(--ion-card-background);
+  border: none;
+  outline: none;
+  resize: none;
+}
+
 .promo-img {
   display: flex;
   justify-content: center;
@@ -57,7 +75,7 @@
   .promo-likes {
     display: flex;
     justify-content: center;
-    align-items: center;;
+    align-items: center;
     gap: 5px;
 
     .promo-likes-qtt {
