@@ -7,9 +7,11 @@ import { PromoService } from '@services/promo.service';
 import { UsersService } from '@services/users.service';
 import { UtilsService } from '@utils/utils.service';
 import { Timestamp } from 'firebase/firestore';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { catchError, map, take } from 'rxjs/operators';
 import { Promo } from '../../resources/models/promo';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 
 @Component({
   selector: 'app-promo',
@@ -35,7 +37,9 @@ export class PromoPage implements OnInit {
     private promoService: PromoService,
     private httpClient: HttpClient,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private geolocation: Geolocation,
+    private camera: Camera
   ) {
     this.initForm();
 
@@ -51,6 +55,21 @@ export class PromoPage implements OnInit {
   }
 
   ngOnInit(): void {
+    /* const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      const base64Image = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      // Handle error
+    }); */
+
     this.uid = this.activatedRoute.snapshot.paramMap.get('uid');
 
     if (!this.uid) {
@@ -85,13 +104,15 @@ export class PromoPage implements OnInit {
   getUserLocation(): void {
     this.initializeAutocomplete(this.defaultPos);
 
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.initializeAutocomplete({ lat: position.coords.latitude, lng: position.coords.longitude });
-      }, () => {
+    const geolocation = from(this.geolocation.getCurrentPosition());
+
+    geolocation.subscribe({
+      next: res => this.initializeAutocomplete({ lat: res.coords.latitude, lng: res.coords.longitude }),
+      error: err => {
+        console.log(err);
         this.utilsService.presentErrorToast('Por favor habilite a localização por GPS!');
-      }, { enableHighAccuracy: true });
-    }
+      }
+    });
   }
 
   initializeAutocomplete(pos: google.maps.LatLngLiteral): void {
@@ -182,14 +203,14 @@ export class PromoPage implements OnInit {
   }
 
   currentUserLocation(): void {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latLng = new google.maps.LatLng({ lat: position.coords.latitude, lng: position.coords.longitude });
+    const geolocation = from(this.geolocation.getCurrentPosition());
 
-        this.setAddress(latLng);
-      }, () => {
+    geolocation.subscribe({
+      next: res => this.setAddress(new google.maps.LatLng({ lat: res.coords.latitude, lng: res.coords.longitude })),
+      error: err => {
+        console.log(err);
         this.utilsService.presentErrorToast('Por favor habilite a localização por GPS!');
-      }, { enableHighAccuracy: true });
-    }
+      }
+    });
   }
 }

@@ -16,6 +16,9 @@ import { AppComponent } from './app.component';
 import { InterceptorService } from './resources/interceptors/http.interceptor';
 
 import localePt from '@angular/common/locales/pt';
+import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+import { TouchID } from '@awesome-cordova-plugins/touch-id/ngx';
 
 registerLocaleData(localePt, 'pt');
 
@@ -35,6 +38,9 @@ registerLocaleData(localePt, 'pt');
     HotToastModule.forRoot(),
   ],
   providers: [
+    Camera,
+    Geolocation,
+    TouchID,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
