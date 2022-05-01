@@ -26,12 +26,12 @@ export class UtilsService {
     return form.get(field)?.invalid && form.get(field)?.touched;
   }
 
-  public async presentErrorToast(): Promise<void> {
+  public async presentErrorToast(message: string = 'Ocorreu um erro!'): Promise<void> {
     const toast = await this.toastController.create({
-      message: 'Salvo com sucesso!',
+      message,
       duration: 2000,
-      icon: 'checkmark-circle-outline',
-      color: 'success',
+      icon: 'close-circle-outline',
+      color: 'danger',
       cssClass: 'text-white'
     });
 

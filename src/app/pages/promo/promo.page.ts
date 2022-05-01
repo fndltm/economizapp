@@ -71,7 +71,9 @@ export class PromoPage implements OnInit {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         this.initializeAutocomplete({ lat: position.coords.latitude, lng: position.coords.longitude });
-      });
+      }, () => {
+        this.utilsService.presentErrorToast('Por favor habilite a localização por GPS!');
+      }, { enableHighAccuracy: true });
     }
   }
 
@@ -120,13 +122,17 @@ export class PromoPage implements OnInit {
 
     const location = autocomplete.getPlace().geometry.location;
 
+    this.setAddress(location);
+  };
+
+  setAddress(location: google.maps.LatLng): void {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location }, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK && results) {
         this.form.get('address').setValue(results[0]?.formatted_address);
       }
     });
-  };
+  }
 
   savePromo(): void {
     this.toggleIsEditing();
@@ -138,5 +144,20 @@ export class PromoPage implements OnInit {
     this.promoService.update(this.form.value).subscribe(() => {
       this.utilsService.presentSuccessToast();
     });
+  }
+
+  currentUserLocation(): void {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
+
+        const latLng = new google.maps.LatLng({ lat: position.coords.latitude, lng: position.coords.longitude });
+        console.log(latLng.toJSON());
+
+        this.setAddress(latLng);
+      }, () => {
+        this.utilsService.presentErrorToast('Por favor habilite a localização por GPS!');
+      }, { enableHighAccuracy: true });
+    }
   }
 }

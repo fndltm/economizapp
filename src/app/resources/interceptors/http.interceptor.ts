@@ -11,7 +11,7 @@ import { finalize } from 'rxjs/operators';
 export class InterceptorService implements HttpInterceptor {
 
   constructor(
-    public utilsService: UtilsService
+    private utilsService: UtilsService,
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
