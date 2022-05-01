@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InterceptorService } from './resources/interceptors/http.interceptor';
+import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 
 import localePt from '@angular/common/locales/pt';
 
@@ -47,6 +48,9 @@ registerLocaleData(localePt, 'pt');
     {
       provide: LOCALE_ID,
       useValue: 'pt'
+    },
+    {
+      provide: Camera
     },
     {
       provide: DEFAULT_CURRENCY_CODE,

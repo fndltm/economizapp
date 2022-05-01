@@ -30,6 +30,10 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/android
+/android.zip
+/ios
+
 
 # Firebase
 .firebase

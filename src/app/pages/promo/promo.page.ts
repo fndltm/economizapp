@@ -7,6 +7,7 @@ import { UtilsService } from '@utils/utils.service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Promo } from '../../resources/models/promo';
+import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 
 @Component({
   selector: 'app-promo',
@@ -26,11 +27,19 @@ export class PromoPage implements OnInit {
   promo: Promo;
   isEditing = false;
 
+  options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.FILE_URI,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE
+  }
+
   constructor(
     public utilsService: UtilsService,
     private activatedRoute: ActivatedRoute,
     private promoService: PromoService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private camera: Camera
   ) { }
 
   ngOnInit(): void {
@@ -159,5 +168,15 @@ export class PromoPage implements OnInit {
         this.utilsService.presentErrorToast('Por favor habilite a localização por GPS!');
       }, { enableHighAccuracy: true });
     }
+  }
+
+  capturePhoto(): void {
+    this.camera.getPicture(this.options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+     }, (err) => {
+      // Handle error
+     });
   }
 }
