@@ -32,6 +32,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/promos/promos.module').then(m => m.PromosPageModule)
       },
       {
+        path: 'add',
+        loadChildren: () => import('./pages/promo/promo.module').then(m => m.PromoPageModule)
+      },
+      {
         path: ':uid',
         loadChildren: () => import('./pages/promo/promo.module').then(m => m.PromoPageModule)
       }

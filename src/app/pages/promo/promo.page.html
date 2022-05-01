@@ -13,7 +13,7 @@
       </ng-container>
 
       <ng-container *ngIf="isEditing">
-        <ion-button color="success" fill="clear" shape="round" (click)="savePromo()">
+        <ion-button color="success" fill="clear" shape="round" (click)="savePromo()" [disabled]="form.invalid">
           <ion-icon name="checkmark-circle-outline"></ion-icon>
           Salvar
         </ion-button>
@@ -23,7 +23,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="form" *ngIf="promo">
+  <form [formGroup]="form">
     <ion-card>
       <ion-card-header>
         <div class="promo-store">
@@ -57,7 +57,7 @@
               </ion-row>
             </ion-grid>
           </div>
-          <div class="promo-date">{{ promo.createdAt.toDate() | date: 'dd/MM/yyyy' }}</div>
+          <div class="promo-date">{{ promo?.createdAt?.toDate() | date: 'dd/MM/yyyy' }}</div>
         </div>
         <div class="promo-info">
           <input formControlName="address" required placeholder="Endereço" #search />
@@ -72,18 +72,18 @@
             </ion-button>
           </ng-container>
 
-          <ion-textarea formControlName="observation" required placeholder="Observação"></ion-textarea>
+          <ion-textarea formControlName="observation" placeholder="Observação"></ion-textarea>
           <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'observation')">
             Preencha o campo corretamente
           </span>
 
-          <div class="promo-created-by">Publicado por: {{ promo.createdBy }}</div>
+          <div class="promo-created-by">Publicado por: {{ promo?.createdBy }}</div>
         </div>
         <div class="promo-footer">
           <div class="promo-likes">
-            <ion-icon slot="icon-only" [color]="promo.liked ? 'danger' : 'medium'" size="large"
+            <ion-icon slot="icon-only" [color]="promo?.liked ? 'danger' : 'medium'" size="large"
               name="heart-circle-outline" (click)="togglePromoLike($event, promo)"></ion-icon>
-            <div class="promo-likes-qtt">{{ promo.likes }}</div>
+            <div class="promo-likes-qtt">{{ promo?.likes }}</div>
           </div>
         </div>
       </ion-card-content>

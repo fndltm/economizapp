@@ -1,6 +1,5 @@
 import { PromoStatus } from '@enums/promo-status';
 import { Timestamp } from 'firebase/firestore';
-import { Comment } from './comment';
 
 export interface Promo {
   uid?: string;
@@ -16,5 +15,4 @@ export interface Promo {
   product?: string;
   status?: PromoStatus;
   store?: string;
-  comments?: Comment[];
 }

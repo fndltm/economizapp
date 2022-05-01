@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PromoStatus } from '@enums/promo-status';
 import { PromoService } from '@services/promo.service';
+import { UsersService } from '@services/users.service';
 import { UtilsService } from '@utils/utils.service';
+import { Timestamp } from 'firebase/firestore';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { Promo } from '../../resources/models/promo';
 
 @Component({
@@ -17,9 +20,9 @@ export class PromoPage implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
 
+  uid: string;
   apiLoaded: Observable<boolean>;
 
-  isLoading = false;
   defaultPos: google.maps.LatLngLiteral = { lat: -19.91648963095628, lng: -43.934471644795686 };
 
   form: FormGroup;
@@ -30,24 +33,38 @@ export class PromoPage implements OnInit {
     public utilsService: UtilsService,
     private activatedRoute: ActivatedRoute,
     private promoService: PromoService,
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+    private usersService: UsersService,
+    private router: Router
+  ) {
+    this.initForm();
+
+    this.apiLoaded = this.httpClient.
+      jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDYYmgUbVdVVKIn6QSNCsAql4deOw766KM&libraries=places', 'callback')
+      .pipe(
+        take(1),
+        map(() => true),
+        catchError(() => of(false))
+      );
+
+    this.apiLoaded.subscribe(() => this.getUserLocation());
+  }
 
   ngOnInit(): void {
-    this.promoService.getByUid(this.activatedRoute.snapshot.paramMap.get('uid'))
-      .subscribe(res => {
+    this.uid = this.activatedRoute.snapshot.paramMap.get('uid');
+
+    if (!this.uid) {
+      this.toggleIsEditing(true);
+      return;
+    }
+
+    this.promoService.getByUid(this.uid)
+      .pipe(
+        take(1)
+      ).subscribe(res => {
         this.promo = { ...res };
 
-        this.initForm();
-
-        this.apiLoaded = this.httpClient.
-          jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyDYYmgUbVdVVKIn6QSNCsAql4deOw766KM&libraries=places', 'callback')
-          .pipe(
-            map(() => true),
-            catchError(() => of(false))
-          );
-
-        this.apiLoaded.subscribe(() => this.getUserLocation());
+        this.form.patchValue(this.promo);
       });
   }
 
@@ -59,9 +76,9 @@ export class PromoPage implements OnInit {
       price: new FormControl({ value: this.promo?.price, disabled: !this.isEditing }, [Validators.required]),
       createdAt: new FormControl({ value: this.promo?.createdAt, disabled: true }),
       address: new FormControl({ value: this.promo?.address, disabled: !this.isEditing }, [Validators.required]),
-      observation: new FormControl({ value: this.promo?.observation || '', disabled: !this.isEditing }, [Validators.required]),
+      observation: new FormControl({ value: this.promo?.observation || '', disabled: !this.isEditing }),
       createdBy: new FormControl({ value: this.promo?.createdBy, disabled: true }),
-      likes: new FormControl({ value: this.promo?.likes, disabled: true }),
+      likes: new FormControl({ value: this.promo?.likes || 0, disabled: true }),
     });
   }
 
@@ -88,6 +105,10 @@ export class PromoPage implements OnInit {
   }
 
   togglePromoLike(event: Event, promo: Promo): void {
+    if (!promo || !promo.uid) {
+      return;
+    }
+
     const p = { ...promo };
     p.liked = !p.liked;
     if (p.liked) { p.likes++; }
@@ -118,8 +139,6 @@ export class PromoPage implements OnInit {
   }
 
   handlePlaceChanged = (autocomplete: google.maps.places.Autocomplete) => {
-    this.isLoading = true;
-
     const location = autocomplete.getPlace().geometry.location;
 
     this.setAddress(location);
@@ -141,18 +160,31 @@ export class PromoPage implements OnInit {
       return;
     }
 
-    this.promoService.update(this.form.value).subscribe(() => {
-      this.utilsService.presentSuccessToast();
-    });
+    if (!this.uid) {
+      const body: Promo = { ...this.form.value };
+
+      this.usersService.currentUserProfile$.pipe(
+        take(1)
+      ).subscribe(user => {
+        body.createdBy = user.displayName;
+        body.createdAt = Timestamp.now();
+        body.status = PromoStatus.active;
+
+        Object.keys(body).forEach(key => body[key] === undefined && delete body[key]);
+        this.promoService.add(body).subscribe(() => {
+          this.utilsService.presentSuccessToast();
+          this.router.navigate(['promos']);
+        });
+      });
+    } else {
+      this.promoService.update(this.form.value).subscribe(() => this.utilsService.presentSuccessToast());
+    }
   }
 
   currentUserLocation(): void {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position);
-
         const latLng = new google.maps.LatLng({ lat: position.coords.latitude, lng: position.coords.longitude });
-        console.log(latLng.toJSON());
 
         this.setAddress(latLng);
       }, () => {
