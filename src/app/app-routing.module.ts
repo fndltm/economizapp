@@ -33,7 +33,8 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        loadChildren: () => import('./pages/promo/promo.module').then(m => m.PromoPageModule)
+        loadChildren: () => import('./pages/promo/promo.module').then(m => m.PromoPageModule),
+        ...canActivate(redirectUnauthorizedToLogin),
       },
       {
         path: ':uid',
