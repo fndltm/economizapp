@@ -38,7 +38,9 @@
 
       <ion-card-content>
         <div class="promo-img">
-          <img width="128" height="128" src="../../../assets/icon/product.png" />
+          <img width="{{ base64Image ? 256 : 128 }}" height="{{ base64Image ? 256 : 128 }}" src="{{ base64Image ? base64Image : imagePath }}" />
+          <button (click)="capturePhoto()">Tirar foto do produto</button>
+          <button *ngIf="base64Image" (click)="removePhoto()">Remover foto</button>
         </div>
         <div class="promo-body">
           <div class="promo-price">

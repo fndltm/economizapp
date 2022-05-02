@@ -19,8 +19,9 @@ textarea {
 .promo-img {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 120px;
+  height: auto;
   margin: 20px 0px;
 }
 
