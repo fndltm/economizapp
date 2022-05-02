@@ -22,5 +22,15 @@
       Não tem uma conta?
       <a routerLink="/sign-up" color="success">Cadastre-se.</a>
     </h6>
+
+    <ion-button class="social-button" (click)="loginWithGoogle()">
+      <ion-icon name="logo-google"></ion-icon>
+      Continuar com o Google
+    </ion-button>
+
+    <ion-button class="social-button" (click)="loginWithFacebook()">
+      <ion-icon name="logo-facebook"></ion-icon>
+      Continuar com o Facebook
+    </ion-button>
   </form>
 </ion-content>

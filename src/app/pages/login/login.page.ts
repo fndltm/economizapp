@@ -3,8 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AuthenticationService } from '@services/authentication.service';
 import { UtilsService } from '@utils/utils.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { from } from 'rxjs';
+
+import { FacebookLogin } from '@capacitor-community/facebook-login';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { isPlatform } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +29,11 @@ export class LoginPage implements OnInit {
     private toast: HotToastService,
     public utilsService: UtilsService,
     private router: Router
-  ) { }
+  ) {
+    if (!isPlatform('capacitor')) {
+      GoogleAuth.initialize();
+    }
+  }
 
   ngOnInit(): void {
   }
@@ -45,5 +54,28 @@ export class LoginPage implements OnInit {
         this.utilsService.setLoading(false);
       })
     ).subscribe(() => this.router.navigate(['']));
+  }
+
+  async loginWithGoogle() {
+    const user = await GoogleAuth.signIn();
+    console.log('user: ', user);
+    console.log('user email: ', user.email);
+    console.log('user family name: ', user.familyName);
+  }
+
+  loginWithFacebook(): void {
+    FacebookLogin.initialize({ appId: '745085980004248' });
+
+    const FACEBOOK_PERMISSIONS = ['email', 'user_birthday', 'user_photos', 'user_gender'];
+    const result = from(FacebookLogin.login({ permissions: FACEBOOK_PERMISSIONS }));
+
+    result.pipe(
+      take(1)
+    ).subscribe(res => {
+      if (res.accessToken) {
+        // Login successful.
+        console.log(`Facebook userId is ${res.accessToken.userId}`);
+      }
+    });
   }
 }

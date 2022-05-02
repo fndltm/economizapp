@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="app_name">economizapp</string>
+  <string name="title_activity_main">economizapp</string>
+  <string name="package_name">io.ionic.starter</string>
+  <string name="custom_url_scheme">io.ionic.starter</string>
+  <string name="server_client_id">587427969321-3bhnlgpntuc65556r3335fge67vimt1f.apps.googleusercontent.com</string>
+  <string name="facebook_app_id">745085980004248</string>
+  <string name="facebook_client_token">cfe5286aab2259f3565bfe59122749d4</string>
+  <string name="fb_login_protocol_scheme">fbcfe5286aab2259f3565bfe59122749d4</string>
+</resources>
