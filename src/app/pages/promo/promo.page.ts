@@ -30,6 +30,8 @@ export class PromoPage implements OnInit {
   form: FormGroup;
   promo: Promo;
   isEditing = false;
+  public imagePath = "../../../assets/icon/product.png"
+  public base64Image = '';
 
   constructor(
     public utilsService: UtilsService,
@@ -39,7 +41,7 @@ export class PromoPage implements OnInit {
     private usersService: UsersService,
     private router: Router,
     private geolocation: Geolocation,
-    private camera: Camera
+    private camera: Camera,
   ) {
     this.initForm();
 
@@ -55,21 +57,6 @@ export class PromoPage implements OnInit {
   }
 
   ngOnInit(): void {
-    /* const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      const base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    }); */
-
     this.uid = this.activatedRoute.snapshot.paramMap.get('uid');
 
     if (!this.uid) {
@@ -212,5 +199,26 @@ export class PromoPage implements OnInit {
         this.utilsService.presentErrorToast('Por favor habilite a localização por GPS!');
       }
     });
+  }
+
+  capturePhoto(): void {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+     // imageData is either a base64 encoded string or a file URI
+     // If it's base64 (DATA_URL):
+     this.base64Image = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+     // Handle error
+    });
+  }
+
+  removePhoto(): void {
+    this.base64Image = '';
   }
 }
