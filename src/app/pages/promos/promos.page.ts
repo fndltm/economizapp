@@ -12,7 +12,6 @@ import { Promo } from '../../resources/models/promo';
 })
 export class PromosPage implements OnInit {
   public promos: Promo[];
-  public message: string = 'teste';
 
   constructor(
     private router: Router,
@@ -43,20 +42,22 @@ export class PromosPage implements OnInit {
 
   loadData(event): void {
     setTimeout(() => {
-      this.promoService.getOrderByStartAfterLimit('createdAt', this.promos[this.promos.length - 1].createdAt, 5).pipe(take(1)).subscribe(promos => {
-        this.promos.push(...promos);
-        event.target.complete();
-      });
+      this.promoService.getOrderByStartAfterLimit('createdAt', this.promos[this.promos.length - 1].createdAt, 5)
+        .pipe(
+          take(1)
+        ).subscribe(promos => {
+          this.promos.push(...promos);
+          event.target.complete();
+        });
     }, 500);
   }
 
   togglePromoLike(event: Event, promo: Promo): void {
-    const p = { ...promo };
-    p.liked = !p.liked;
-    if (p.liked) { p.likes++; }
-    else { p.likes--; }
+    promo.liked = !promo.liked;
+    if (promo.liked) { promo.likes++; }
+    else { promo.likes--; }
 
-    this.promoService.update(p);
+    this.promoService.update(promo);
     event.stopPropagation();
   }
 
