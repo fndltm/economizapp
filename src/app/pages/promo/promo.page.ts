@@ -30,7 +30,7 @@ export class PromoPage implements OnInit {
   form: FormGroup;
   promo: Promo;
   isEditing = false;
-  public imagePath = "../../../assets/icon/product.png"
+  public imagePath = '../../../assets/icon/product.png';
   public base64Image = '';
 
   constructor(
@@ -207,14 +207,14 @@ export class PromoPage implements OnInit {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
-    }
+    };
 
     this.camera.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64 (DATA_URL):
-     this.base64Image = 'data:image/jpeg;base64,' + imageData;
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
-     // Handle error
+      // Handle error
     });
   }
 

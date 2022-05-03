@@ -34,12 +34,21 @@ export class UsersService extends BaseService<UserProfile> {
           return of(null);
         }
 
-        const ref = doc(this.firestore, 'users', user?.uid);
+        const ref = doc(this.firestore, 'users', user.uid);
         this.utilsService.setLoading(false);
-
         return docData(ref) as Observable<UserProfile>;
       }),
       finalize(() => this.utilsService.setLoading(false))
     );
+  }
+
+  addUser(user: UserProfile): Observable<void> {
+    const ref = doc(this.firestore, 'users', user.uid);
+    return from(setDoc(ref, user));
+  }
+
+  updateUser(user: UserProfile): Observable<void> {
+    const ref = doc(this.firestore, 'users', user.uid);
+    return from(updateDoc(ref, { ...user }));
   }
 }

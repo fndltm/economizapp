@@ -66,7 +66,7 @@ export class ProfileComponent implements OnInit {
           error: 'Houve um erro ao fazer upload da imagem!'
         }),
         switchMap((photoURL) =>
-          this.usersService.update({ uid, photoURL })
+          this.usersService.updateUser({ uid, photoURL })
         ),
         finalize(() => this.utilsService.setLoading(false))
       )

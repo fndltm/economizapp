@@ -58,7 +58,7 @@ export class SignupPage implements OnInit {
       .signUp(email, password)
       .pipe(
         switchMap(({ user: { uid } }) =>
-          this.usersService.add({ uid, email, displayName })
+          this.usersService.addUser({ uid, email, displayName })
         ),
         this.toast.observe({
           success: 'Cadastrado com sucesso!',
