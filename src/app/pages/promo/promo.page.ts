@@ -49,17 +49,6 @@ export class PromoPage implements OnInit {
     private imageUploadService: ImageUploadService
   ) {
     this.initForm();
-
-    this.apiLoaded = this.httpClient.
-      jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyCvlmFidCQAblRxt1y2feyBxCXBd3yqIaI&libraries=places', 'callback')
-      .pipe(
-        map(() => true),
-        catchError(() => of(false))
-      );
-
-    this.apiLoaded.pipe(
-      take(1)
-    ).subscribe(() => this.getUserLocation());
   }
 
   ngOnInit(): void {
@@ -93,6 +82,24 @@ export class PromoPage implements OnInit {
           this.canEdit = this.user.displayName === this.promo.createdBy;
         });
     });
+
+    setTimeout(() => {
+      if (typeof google === 'object' && typeof google.maps === 'object') {
+        this.getUserLocation();
+        return;
+      }
+
+      this.apiLoaded = this.httpClient.
+        jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyCvlmFidCQAblRxt1y2feyBxCXBd3yqIaI&libraries=places', 'callback')
+        .pipe(
+          map(() => true),
+          catchError(() => of(false))
+        );
+
+      this.apiLoaded.pipe(
+        take(1)
+      ).subscribe(() => this.getUserLocation());
+    }, 500);
   }
 
   initForm() {
