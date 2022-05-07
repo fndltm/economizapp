@@ -10,6 +10,7 @@ import { from } from 'rxjs';
 import { FacebookLogin } from '@capacitor-community/facebook-login';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { isPlatform } from '@ionic/angular';
+import { UsersService } from '@services/users.service';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private authService: AuthenticationService,
+    private usersService: UsersService,
     private toast: HotToastService,
     public utilsService: UtilsService,
     private router: Router
@@ -44,6 +46,10 @@ export class LoginPage implements OnInit {
     }
 
     const { email, password } = this.form.value;
+    this.login(email, password);
+  }
+
+  login(email, password): void {
     this.authService.login(email, password).pipe(
       this.toast.observe({
         success: 'Logado com sucesso',
@@ -56,26 +62,42 @@ export class LoginPage implements OnInit {
     ).subscribe(() => this.router.navigate(['']));
   }
 
-  async loginWithGoogle() {
-    const user = await GoogleAuth.signIn();
-    console.log('user: ', user);
-    console.log('user email: ', user.email);
-    console.log('user family name: ', user.familyName);
+  loginWithGoogle(): void {
+    const result = from(GoogleAuth.signIn());
+    result.pipe(
+      take(1)
+    ).subscribe(user => {
+      this.authService.loginWithGoogle(user).subscribe(() => {
+        this.authService.currentUser$.pipe(
+          take(1)
+        ).subscribe(res => {
+          const { uid, email, displayName } = res;
+          this.usersService.addUser({ uid, email, displayName }).subscribe();
+        });
+      });
+    });
   }
 
   loginWithFacebook(): void {
-    FacebookLogin.initialize({ appId: '745085980004248' });
+    FacebookLogin.initialize({ appId: '745085980004248', autoLogAppEvents: true, xfbml: true, version: 'v10.0' });
 
     const FACEBOOK_PERMISSIONS = ['email', 'user_birthday', 'user_photos', 'user_gender'];
     const result = from(FacebookLogin.login({ permissions: FACEBOOK_PERMISSIONS }));
 
     result.pipe(
       take(1)
-    ).subscribe(res => {
-      if (res.accessToken) {
-        // Login successful.
-        console.log(`Facebook userId is ${res.accessToken.userId}`);
-      }
+    ).subscribe(facebookRes => {
+      this.authService.loginWithFacebook(facebookRes)
+        .then(() => {
+          this.authService.currentUser$.pipe(
+            take(1)
+          ).subscribe(res => {
+            if (res) {
+              const { uid, email, displayName } = res;
+              this.usersService.addUser({ uid, email, displayName }).subscribe();
+            }
+          });
+        });
     });
   }
 }

@@ -46,9 +46,4 @@ export class UsersService extends BaseService<UserProfile> {
     const ref = doc(this.firestore, 'users', user.uid);
     return from(setDoc(ref, user));
   }
-
-  updateUser(user: UserProfile): Observable<void> {
-    const ref = doc(this.firestore, 'users', user.uid);
-    return from(updateDoc(ref, { ...user }));
-  }
 }

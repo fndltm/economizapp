@@ -2,8 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { provideFirebaseApp } from '@angular/fire/app';
-import { initializeAuth, provideAuth } from '@angular/fire/auth';
-
+import { FacebookAuthProvider, GoogleAuthProvider, initializeAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { BrowserModule } from '@angular/platform-browser';
@@ -41,6 +40,8 @@ registerLocaleData(localePt, 'pt');
   providers: [
     Camera,
     Geolocation,
+    GoogleAuthProvider,
+    FacebookAuthProvider,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
