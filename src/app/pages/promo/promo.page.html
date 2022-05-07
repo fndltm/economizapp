@@ -5,14 +5,14 @@
     </ion-buttons>
     <ion-title class="header">Economizapp</ion-title>
     <ion-buttons slot="end">
-      <ng-container *ngIf="!isEditing">
+      <ng-container *ngIf="!isEditing && canEdit">
         <ion-button color="primary" fill="clear" shape="round" (click)="toggleIsEditing()">
           <ion-icon name="create-outline"></ion-icon>
           Editar
         </ion-button>
       </ng-container>
 
-      <ng-container *ngIf="isEditing">
+      <ng-container *ngIf="isEditing && canEdit">
         <ion-button color="success" fill="clear" shape="round" (click)="savePromo()" [disabled]="form.invalid">
           <ion-icon name="checkmark-circle-outline"></ion-icon>
           Salvar

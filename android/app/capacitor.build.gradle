@@ -17,7 +17,7 @@ dependencies {
     implementation project(':codetrix-studio-capacitor-google-auth')
     implementation "androidx.core:core:1.6.+"
 }
-
+apply from: "../../node_modules/cordova-plugin-buildinfo/src/android/BuildInfo.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

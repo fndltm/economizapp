@@ -13,6 +13,7 @@ import { Promo } from '../../resources/models/promo';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { ImageUploadService } from '@services/image-upload.service';
+import { UserProfile } from '@models/user-profile';
 
 @Component({
   selector: 'app-promo',
@@ -31,6 +32,8 @@ export class PromoPage implements OnInit {
   form: FormGroup;
   promo: Promo;
   isEditing = false;
+  canEdit = false;
+  user: UserProfile = {} as UserProfile;
   public imagePath = '../../../assets/icon/product.png';
   public base64Image = '';
 
@@ -50,7 +53,6 @@ export class PromoPage implements OnInit {
     this.apiLoaded = this.httpClient.
       jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyCvlmFidCQAblRxt1y2feyBxCXBd3yqIaI&libraries=places', 'callback')
       .pipe(
-        take(1),
         map(() => true),
         catchError(() => of(false))
       );
@@ -61,21 +63,36 @@ export class PromoPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.uid = this.activatedRoute.snapshot.paramMap.get('uid');
+    this.usersService.currentUserProfile$.subscribe(user => {
+      this.user = { ...user };
 
-    if (!this.uid) {
-      this.toggleIsEditing(true);
-      return;
-    }
+      this.uid = this.activatedRoute.snapshot.paramMap.get('uid');
+      if (!this.uid) {
+        this.toggleIsEditing(true);
+        return;
+      }
 
-    this.promoService.getByUid(this.uid)
-      .pipe(
-        take(1)
-      ).subscribe(res => {
-        this.promo = { ...res };
+      this.promoService.getByUid(this.uid)
+        .pipe(
+          take(1)
+        ).subscribe(res => {
+          this.promo = { ...res };
 
-        this.form.patchValue(this.promo);
-      });
+          this.form.patchValue(this.promo);
+
+          if (!this.user) {
+            this.canEdit = false;
+            return;
+          }
+
+          if (!this.promo) {
+            this.canEdit = true;
+            return;
+          }
+
+          this.canEdit = this.user.displayName === this.promo.createdBy;
+        });
+    });
   }
 
   initForm() {
@@ -177,46 +194,42 @@ export class PromoPage implements OnInit {
 
       const body: Promo = { ...this.form.value };
 
-      this.usersService.currentUserProfile$.pipe(
-        take(1)
-      ).subscribe(user => {
-        body.createdBy = user.displayName;
-        body.createdAt = Timestamp.now();
-        body.status = PromoStatus.active;
 
-        Object.keys(body).forEach(key => body[key] === undefined && delete body[key]);
+      body.createdBy = this.user.displayName;
+      body.createdAt = Timestamp.now();
+      body.status = PromoStatus.active;
 
-        if (this.base64Image) {
-          const photoName = `${user.displayName}'s Photo #${body.createdAt.seconds}`;
-          from(this.dataUrlToFile(this.base64Image, photoName))
-            .pipe(
-              take(1)
-            ).subscribe(file => {
-              this.imageUploadService
-                .uploadImage(file, `images/products/${photoName}`)
-                .pipe(
-                  take(1),
-                  finalize(() => this.utilsService.setLoading(false))
-                ).subscribe((photoURL) => {
-                  body.photo = photoURL;
-                  this.promoService.add(body).pipe(
-                    take(1)
-                  ).subscribe(() => {
-                    this.utilsService.presentSuccessToast();
-                    this.router.navigate(['promos']);
-                  });
-                });
-            });
-        } else {
-          this.promoService.add(body).pipe(
+      Object.keys(body).forEach(key => body[key] === undefined && delete body[key]);
+
+      if (this.base64Image) {
+        const photoName = `${this.user.displayName}'s Photo #${body.createdAt.seconds}`;
+        from(this.dataUrlToFile(this.base64Image, photoName))
+          .pipe(
             take(1)
-          ).subscribe(() => {
-            this.utilsService.presentSuccessToast();
-            this.router.navigate(['promos']);
+          ).subscribe(file => {
+            this.imageUploadService
+              .uploadImage(file, `images/products/${photoName}`)
+              .pipe(
+                take(1),
+                finalize(() => this.utilsService.setLoading(false))
+              ).subscribe((photoURL) => {
+                body.photo = photoURL;
+                this.promoService.add(body).pipe(
+                  take(1)
+                ).subscribe(() => {
+                  this.utilsService.presentSuccessToast();
+                  this.router.navigate(['promos']);
+                });
+              });
           });
-        }
-
-      });
+      } else {
+        this.promoService.add(body).pipe(
+          take(1)
+        ).subscribe(() => {
+          this.utilsService.presentSuccessToast();
+          this.router.navigate(['promos']);
+        });
+      }
     } else {
       if (this.base64Image) {
         const photoName = `${this.form.get('createdBy').value}'s Photo #${this.form.get('createdAt').value.seconds}`;
