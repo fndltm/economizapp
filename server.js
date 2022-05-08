@@ -18,6 +18,9 @@ app.use(function (req, res, next) {
 
 app.use(express.static('www'));
 app.set('port', process.env.PORT || 5000);
+app.get('/*', function (req, res) {
+  return res.send('Index Page');
+});
 app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
