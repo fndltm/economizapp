@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FacebookLogin } from '@capacitor-community/facebook-login';
 import { AuthenticationService } from '@services/authentication.service';
 import { UsersService } from '@services/users.service';
 import { UtilsService } from '@utils/utils.service';
@@ -26,6 +27,7 @@ export class AccountPage implements OnInit {
     this.authService.logout().pipe(
       finalize(() => this.utilsService.setLoading(false))
     ).subscribe(() => {
+      FacebookLogin.logout();
       this.router.navigate(['']);
     });
   }

@@ -79,7 +79,7 @@ export class LoginPage implements OnInit {
   }
 
   loginWithFacebook(): void {
-    FacebookLogin.initialize({ appId: '745085980004248', autoLogAppEvents: true, xfbml: true, version: 'v10.0' });
+    FacebookLogin.initialize({ appId: '745085980004248', autoLogAppEvents: true, xfbml: true, version: 'v13.0' });
 
     const FACEBOOK_PERMISSIONS = ['email', 'user_birthday', 'user_photos', 'user_gender'];
     const result = from(FacebookLogin.login({ permissions: FACEBOOK_PERMISSIONS }));
