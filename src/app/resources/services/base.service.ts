@@ -1,6 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, doc, DocumentReference, limit, orderBy, query, startAfter, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  DocumentReference,
+  limit,
+  orderBy,
+  OrderByDirection,
+  query,
+  startAfter,
+  updateDoc
+} from 'firebase/firestore';
 import { docData } from 'rxfire/firestore';
 import { DocumentData } from 'rxfire/firestore/interfaces';
 import { from, Observable } from 'rxjs';
@@ -16,15 +27,22 @@ export class BaseService<T extends { uid?: string }> {
     return collectionData(collection(this.firestore, this.collectionName), { idField: 'uid' }) as Observable<T[]>;
   }
 
-  getOrderByLimit(orderByName: string, limitNumber: number): Observable<T[]> {
+  getOrderByLimit(orderByName: string, limitNumber: number, direction: OrderByDirection = 'asc'): Observable<T[]> {
     return collectionData(
-      query(collection(this.firestore, this.collectionName), orderBy(orderByName), limit(limitNumber)), { idField: 'uid' }
+      query(collection(this.firestore, this.collectionName), orderBy(orderByName, direction), limit(limitNumber)), { idField: 'uid' }
     ) as Observable<T[]>;
   }
 
-  getOrderByStartAfterLimit(orderByName: string, startAfterName: any, limitNumber: number): Observable<T[]> {
+  getOrderByStartAfterLimit(
+    orderByName: string,
+    startAfterName: any,
+    limitNumber: number,
+    direction: OrderByDirection = 'asc'
+  ): Observable<T[]> {
     return collectionData(
-      query(collection(this.firestore, this.collectionName), orderBy(orderByName), startAfter(startAfterName), limit(limitNumber)),
+      query(
+        collection(this.firestore, this.collectionName),
+        orderBy(orderByName, direction), startAfter(startAfterName), limit(limitNumber)),
       { idField: 'uid' }
     ) as Observable<T[]>;
   }

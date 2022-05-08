@@ -34,7 +34,7 @@ export class PromosPage implements OnInit {
       }).subscribe();
     } */
 
-    this.promoService.getOrderByLimit('createdAt', 5).pipe(take(1)).subscribe(promos => this.promos = [...promos]);
+    this.promoService.getOrderByLimit('createdAt', 5, 'desc').pipe(take(1)).subscribe(promos => this.promos = [...promos]);
   }
 
   ngOnInit(): void {
@@ -42,7 +42,7 @@ export class PromosPage implements OnInit {
 
   loadData(event): void {
     setTimeout(() => {
-      this.promoService.getOrderByStartAfterLimit('createdAt', this.promos[this.promos.length - 1].createdAt, 5)
+      this.promoService.getOrderByStartAfterLimit('createdAt', this.promos[this.promos.length - 1].createdAt, 5, 'desc')
         .pipe(
           take(1)
         ).subscribe(promos => {
