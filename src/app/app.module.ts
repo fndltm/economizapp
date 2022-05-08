@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InterceptorService } from './resources/interceptors/http.interceptor';
-import { indexedDBLocalPersistence } from 'firebase/auth';
+import { browserPopupRedirectResolver, indexedDBLocalPersistence } from 'firebase/auth';
 
 import localePt from '@angular/common/locales/pt';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
@@ -32,7 +32,11 @@ registerLocaleData(localePt, 'pt');
     IonicModule.forRoot(),
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => initializeAuth(getApp(), { persistence: indexedDBLocalPersistence })),
+    provideAuth(() => initializeAuth(getApp(),
+      {
+        persistence: indexedDBLocalPersistence,
+        popupRedirectResolver: browserPopupRedirectResolver,
+      })),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     HotToastModule.forRoot(),
