@@ -7,8 +7,6 @@ export interface Promo {
   category?: string;
   createdAt?: Timestamp;
   createdBy?: string;
-  liked?: boolean;
-  likes?: number;
   observation?: string;
   photo: string;
   price?: number;

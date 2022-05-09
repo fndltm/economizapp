@@ -24,8 +24,6 @@ export class PromosPage implements OnInit {
         category: 'category' + index,
         createdAt: new Date(2022, 4, 16, index, index, index),
         createdBy: 'createdBy' + index,
-        liked: true,
-        likes: index,
         photo: 'photo' + index,
         price: index,
         product: 'product' + index,
@@ -50,15 +48,6 @@ export class PromosPage implements OnInit {
           event.target.complete();
         });
     }, 500);
-  }
-
-  togglePromoLike(event: Event, promo: Promo): void {
-    promo.liked = !promo.liked;
-    if (promo.liked) { promo.likes++; }
-    else { promo.likes--; }
-
-    this.promoService.update(promo);
-    event.stopPropagation();
   }
 
   navigateToPromo(promo: Promo): void {

@@ -112,7 +112,6 @@ export class PromoPage implements OnInit {
       address: new FormControl({ value: this.promo?.address, disabled: !this.isEditing }, [Validators.required]),
       observation: new FormControl({ value: this.promo?.observation || '', disabled: !this.isEditing }),
       createdBy: new FormControl({ value: this.promo?.createdBy, disabled: true }),
-      likes: new FormControl({ value: this.promo?.likes || 0, disabled: true }),
       photo: new FormControl({ value: this.promo?.photo || '', disabled: true }),
     });
   }
@@ -139,19 +138,6 @@ export class PromoPage implements OnInit {
     });
 
     autocomplete.addListener('place_changed', () => { this.handlePlaceChanged(autocomplete); });
-  }
-
-  togglePromoLike(event: Event, promo: Promo): void {
-    if (!promo || !promo.uid) {
-      return;
-    }
-
-    promo.liked = !promo.liked;
-    if (promo.liked) { promo.likes++; }
-    else { promo.likes--; }
-
-    this.promoService.update(promo);
-    event.stopPropagation();
   }
 
   toggleIsEditing(editing?: boolean): void {

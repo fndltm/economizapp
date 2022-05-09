@@ -30,11 +30,6 @@
           <div class="promo-date">{{ promo.createdAt.toDate() | date: 'dd/MM/yyyy' }}</div>
         </div>
         <div class="promo-footer">
-          <div class="promo-likes">
-            <ion-icon slot="icon-only" [color]="promo.liked ? 'danger' : 'medium'" size="large"
-              name="heart-circle-outline" (click)="togglePromoLike($event, promo)"></ion-icon>
-            <div class="promo-likes-qtt">{{ promo.likes }}</div>
-          </div>
           <div class="promo-address">
             <ion-button size="small" [routerLink]="[promo.uid]">Ver endereço</ion-button>
           </div>

@@ -83,13 +83,6 @@
 
           <div class="promo-created-by">Publicado por: {{ promo?.createdBy }}</div>
         </div>
-        <div class="promo-footer">
-          <div class="promo-likes">
-            <ion-icon slot="icon-only" [color]="promo?.liked ? 'danger' : 'medium'" size="large"
-              name="heart-circle-outline" (click)="togglePromoLike($event, promo)"></ion-icon>
-            <div class="promo-likes-qtt">{{ promo?.likes }}</div>
-          </div>
-        </div>
       </ion-card-content>
     </ion-card>
   </form>
