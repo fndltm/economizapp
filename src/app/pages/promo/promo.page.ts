@@ -11,9 +11,11 @@ import { from, Observable, of } from 'rxjs';
 import { catchError, finalize, map, switchMap, take } from 'rxjs/operators';
 import { Promo } from '../../resources/models/promo';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { ImageUploadService } from '@services/image-upload.service';
 import { UserProfile } from '@models/user-profile';
+import { isPlatform } from '@ionic/angular';
+import { Camera as CameraMobile, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 
 @Component({
   selector: 'app-promo',
@@ -45,7 +47,7 @@ export class PromoPage implements OnInit {
     private usersService: UsersService,
     private router: Router,
     private geolocation: Geolocation,
-    private camera: Camera,
+    private camera: CameraMobile,
     private imageUploadService: ImageUploadService
   ) {
     this.initForm();
@@ -260,6 +262,25 @@ export class PromoPage implements OnInit {
   }
 
   capturePhoto(): void {
+    if (!isPlatform('capacitor')) {
+      this.takePictureWeb();
+    } else {
+      this.takePictureMobile();
+    }
+  }
+
+  takePictureWeb = async () => {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: true,
+      resultType: CameraResultType.Base64,
+      width: 720
+    });
+
+    this.base64Image = 'data:image/jpeg;base64,' + image.base64String;
+  };
+
+  takePictureMobile(): void {
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
