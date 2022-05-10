@@ -38,7 +38,8 @@
 
       <ion-card-content>
         <div class="promo-img">
-          <img width="{{ base64Image ? 256 : 128 }}" height="{{ base64Image ? 256 : 128 }}" src="{{ getImage() }}" />
+          <img *ngIf="!base64Image && !promo?.photo" width="256" height="256" src="{{ getImage() }}" />
+          <img *ngIf="base64Image || promo?.photo" class="real-img" src="{{ getImage() }}">
           <ng-container *ngIf="isEditing">
             <button *ngIf="!base64Image" (click)="capturePhoto()">Tirar foto do produto</button>
             <button *ngIf="base64Image" (click)="removePhoto()">Remover foto</button>
