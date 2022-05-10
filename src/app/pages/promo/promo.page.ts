@@ -57,6 +57,7 @@ export class PromoPage implements OnInit {
 
       this.uid = this.activatedRoute.snapshot.paramMap.get('uid');
       if (!this.uid) {
+        this.canEdit = true;
         this.toggleIsEditing(true);
         return;
       }
