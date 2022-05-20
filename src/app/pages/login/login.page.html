@@ -1,7 +1,10 @@
 <ion-content class="ion-padding">
-  <form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="logo">
+    <img src="../../../assets/images/save-money.svg" />
     <ion-text color="white" class="ion-margin-bottom pacifico-font">Economizapp</ion-text>
+  </div>
 
+  <form [formGroup]="form" (ngSubmit)="submit()">
     <ion-item>
       <ion-label position="floating">Email</ion-label>
       <ion-input formControlName="email" required autofocus inputmode="email"></ion-input>

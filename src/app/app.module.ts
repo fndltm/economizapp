@@ -19,6 +19,7 @@ import { browserPopupRedirectResolver, indexedDBLocalPersistence } from 'firebas
 import localePt from '@angular/common/locales/pt';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localePt, 'pt');
 
@@ -40,6 +41,12 @@ registerLocaleData(localePt, 'pt');
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     HotToastModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     Camera,

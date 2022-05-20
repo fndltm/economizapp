@@ -36,7 +36,7 @@ export class PromoPage implements OnInit {
   isEditing = false;
   canEdit = false;
   user: UserProfile = {} as UserProfile;
-  public imagePath = '../../../assets/icon/product.png';
+  public imagePath = '../../../assets/icons/product.png';
   public base64Image = '';
 
   constructor(

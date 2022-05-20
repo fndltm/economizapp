@@ -3,9 +3,21 @@
   height: 100%;
 }
 
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+}
+
 form {
-  height: 100%;
-  padding: 1rem;
+  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
