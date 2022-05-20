@@ -240,11 +240,17 @@ export class PromoPage implements OnInit {
               }),
               finalize(() => this.utilsService.setLoading(false))
             ).subscribe(() => {
-              this.promoService.update(this.form.value).subscribe(() => this.utilsService.presentSuccessToast());
+              this.promoService.update(this.form.value).subscribe(() => {
+                this.utilsService.presentSuccessToast();
+                this.router.navigate(['promos']);
+              });
             });
         });
       } else {
-        this.promoService.update(this.form.value).subscribe(() => this.utilsService.presentSuccessToast());
+        this.promoService.update(this.form.value).subscribe(() => {
+          this.utilsService.presentSuccessToast();
+          this.router.navigate(['promos']);
+        });
       }
     }
   }

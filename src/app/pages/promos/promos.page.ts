@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { UtilsService } from '@utils/utils.service';
@@ -10,7 +10,7 @@ import { Promo } from '../../resources/models/promo';
   templateUrl: './promos.page.html',
   styleUrls: ['./promos.page.scss'],
 })
-export class PromosPage implements OnInit {
+export class PromosPage {
   public promos: Promo[];
 
   constructor(
@@ -31,11 +31,13 @@ export class PromosPage implements OnInit {
         store: 'store' + index,
       }).subscribe();
     } */
-
-    this.promoService.getOrderByLimit('createdAt', 5, 'desc').pipe(take(1)).subscribe(promos => this.promos = [...promos]);
   }
 
-  ngOnInit(): void {
+  ionViewDidEnter(): void {
+    this.promoService.getOrderByLimit('createdAt', 5, 'desc').pipe(take(1)).subscribe(promos => {
+      this.promos = [...promos];
+      this.utilsService.setLoading(false);
+    });
   }
 
   loadData(event): void {
