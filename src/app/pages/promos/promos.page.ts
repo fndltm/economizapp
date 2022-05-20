@@ -40,6 +40,14 @@ export class PromosPage {
     });
   }
 
+  doRefresh(event): void {
+    this.promoService.getOrderByLimit('createdAt', 5, 'desc').pipe(take(1)).subscribe(promos => {
+      this.promos = [...promos];
+      event.target.complete();
+      this.utilsService.setLoading(false);
+    });
+  }
+
   loadData(event): void {
     setTimeout(() => {
       this.promoService.getOrderByStartAfterLimit('createdAt', this.promos[this.promos.length - 1].createdAt, 5, 'desc')
