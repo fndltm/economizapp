@@ -20,13 +20,14 @@ import localePt from '@angular/common/locales/pt';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
+import { SplashScreenComponent } from './shared/components/splash-screen/splash-screen.component';
 
 registerLocaleData(localePt, 'pt');
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SplashScreenComponent
   ],
   entryComponents: [],
   imports: [
@@ -54,7 +55,6 @@ registerLocaleData(localePt, 'pt');
     Geolocation,
     GoogleAuthProvider,
     FacebookAuthProvider,
-    SplashScreen,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy

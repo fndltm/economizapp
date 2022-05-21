@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { UtilsService } from '@utils/utils.service';
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +11,7 @@ export class AppComponent {
   isLoading = false;
   isLoginPage;
 
-  constructor(private splashScreen: SplashScreen, router: Router, public utilsService: UtilsService) {
-    this.splashScreen.show();
-
+  constructor(router: Router, public utilsService: UtilsService) {
     this.utilsService.isLoading.subscribe(loading => this.isLoading = loading);
 
     router.events.subscribe(val => {

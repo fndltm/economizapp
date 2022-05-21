@@ -8,6 +8,7 @@
     "start": "node server.js",
     "heroku-postbuild": "ng build --configuration=production",
     "build": "ng build --configuration=production",
+    "resources": "capacitor-resources -p android,ios",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
