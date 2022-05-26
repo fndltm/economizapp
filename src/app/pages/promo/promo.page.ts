@@ -86,6 +86,12 @@ export class PromoPage implements OnInit {
         });
     });
 
+    if (this.isEditing) {
+      this.initMaps();
+    }
+  }
+
+  initMaps(): void {
     setTimeout(() => {
       if (typeof google === 'object' && typeof google.maps === 'object') {
         this.getUserLocation();
@@ -158,6 +164,7 @@ export class PromoPage implements OnInit {
 
     if (this.isEditing) {
       this.form.enable();
+      this.initMaps();
     } else {
       this.form.disable();
     }
@@ -307,6 +314,7 @@ export class PromoPage implements OnInit {
 
   removePhoto(): void {
     this.base64Image = '';
+    this.promo.photo = '';
   }
 
   async dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {

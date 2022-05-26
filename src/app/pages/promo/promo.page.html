@@ -40,11 +40,13 @@
         <div class="promo-img">
           <img *ngIf="!base64Image && !promo?.photo" width="256" height="256" src="{{ getImage() }}" />
           <img *ngIf="base64Image || promo?.photo" class="real-img" src="{{ getImage() }}">
-          <ng-container *ngIf="isEditing">
-            <button *ngIf="!base64Image" (click)="capturePhoto()">Tirar foto do produto</button>
-            <button *ngIf="base64Image" (click)="removePhoto()">Remover foto</button>
-          </ng-container>
         </div>
+        <ng-container *ngIf="isEditing">
+          <div class="photo-btn">
+            <button *ngIf="!base64Image && !promo?.photo" (click)="capturePhoto()">Tirar foto do produto</button>
+            <button *ngIf="base64Image || promo?.photo" (click)="removePhoto()">Remover foto</button>
+          </div>
+        </ng-container>
         <div class="promo-body">
           <div class="promo-price">
             <ion-grid>

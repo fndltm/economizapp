@@ -21,17 +21,26 @@ textarea {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 300px;
   height: 300px;
   overflow: hidden;
   position: relative;
 
   .real-img {
     width: 300px;
+    height: 300px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
   }
+}
+
+.photo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0;
 }
 
 .promo-body {
