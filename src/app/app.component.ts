@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { UtilsService } from '@utils/utils.service';
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
