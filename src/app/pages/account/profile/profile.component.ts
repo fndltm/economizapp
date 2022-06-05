@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { ImageUploadService } from '@services/image-upload.service';
 import { UsersService } from '@services/users.service';
 import { UtilsService } from '@utils/utils.service';
-import { switchMap, finalize, concatMap } from 'rxjs/operators';
+import { switchMap, finalize, concatMap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -47,6 +47,7 @@ export class ProfileComponent implements OnInit {
     this.usersService
       .update(this.form.value)
       .pipe(
+        take(1),
         this.toast.observe({
           success: 'Salvo com sucesso!',
           loading: 'Carregando...',
@@ -60,6 +61,7 @@ export class ProfileComponent implements OnInit {
     this.imageUploadService
       .uploadImage(event.target.files[0], `images/profile/${uid}`)
       .pipe(
+        take(1),
         this.toast.observe({
           success: 'Upload com sucesso!',
           loading: 'Fazendo upload da imagem...',

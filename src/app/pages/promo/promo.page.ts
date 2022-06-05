@@ -130,7 +130,9 @@ export class PromoPage implements OnInit {
 
     const geolocation = from(this.geolocation.getCurrentPosition());
 
-    geolocation.subscribe({
+    geolocation.pipe(
+      take(1)
+    ).subscribe({
       next: res => this.initializeAutocomplete({ lat: res.coords.latitude, lng: res.coords.longitude }),
       error: err => {
         console.log(err);
@@ -241,6 +243,7 @@ export class PromoPage implements OnInit {
           this.imageUploadService
             .uploadImage(file, `images/products/${photoName}`)
             .pipe(
+              take(1),
               switchMap((photoURL) => {
                 this.form.get('photo').setValue(photoURL);
                 return of(null);
@@ -254,7 +257,9 @@ export class PromoPage implements OnInit {
             });
         });
       } else {
-        this.promoService.update(this.form.value).subscribe(() => {
+        this.promoService.update(this.form.value).pipe(
+          take(1)
+        ).subscribe(() => {
           this.utilsService.presentSuccessToast();
           this.router.navigate(['promos']);
         });
@@ -265,7 +270,9 @@ export class PromoPage implements OnInit {
   currentUserLocation(): void {
     const geolocation = from(this.geolocation.getCurrentPosition());
 
-    geolocation.subscribe({
+    geolocation.pipe(
+      take(1)
+    ).subscribe({
       next: res => this.setAddress(new google.maps.LatLng({ lat: res.coords.latitude, lng: res.coords.longitude })),
       error: err => {
         console.log(err);

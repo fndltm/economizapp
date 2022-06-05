@@ -6,7 +6,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { AuthenticationService } from '@services/authentication.service';
 import { UsersService } from '@services/users.service';
 import { UtilsService } from '@utils/utils.service';
-import { finalize, switchMap } from 'rxjs/operators';
+import { finalize, switchMap, take } from 'rxjs/operators';
 
 export function passwordsMatchValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -57,6 +57,7 @@ export class SignupPage implements OnInit {
     this.authService
       .signUp(email, password)
       .pipe(
+        take(1),
         switchMap(({ user: { uid } }) =>
           this.usersService.addUser({ uid, email, displayName })
         ),

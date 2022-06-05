@@ -51,6 +51,7 @@ export class LoginPage implements OnInit {
 
   login(email, password): void {
     this.authService.login(email, password).pipe(
+      take(1),
       this.toast.observe({
         success: 'Logado com sucesso',
         loading: 'Carregando...',
@@ -71,8 +72,11 @@ export class LoginPage implements OnInit {
         this.authService.currentUser$.pipe(
           take(1)
         ).subscribe(res => {
+          this.router.navigate(['']);
           const { uid, email, displayName } = res;
-          this.usersService.addUser({ uid, email, displayName }).subscribe();
+          this.usersService.addUser({ uid, email, displayName }).pipe(
+            take(1)
+          ).subscribe();
         });
       });
     });
@@ -92,9 +96,12 @@ export class LoginPage implements OnInit {
           this.authService.currentUser$.pipe(
             take(1)
           ).subscribe(res => {
+            this.router.navigate(['']);
             if (res) {
               const { uid, email, displayName } = res;
-              this.usersService.addUser({ uid, email, displayName }).subscribe();
+              this.usersService.addUser({ uid, email, displayName }).pipe(
+                take(1)
+              ).subscribe();
             }
           });
         });

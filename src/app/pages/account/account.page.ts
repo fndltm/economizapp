@@ -4,7 +4,7 @@ import { FacebookLogin } from '@capacitor-community/facebook-login';
 import { AuthenticationService } from '@services/authentication.service';
 import { UsersService } from '@services/users.service';
 import { UtilsService } from '@utils/utils.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account',
@@ -25,6 +25,7 @@ export class AccountPage implements OnInit {
 
   logout() {
     this.authService.logout().pipe(
+      take(1),
       finalize(() => this.utilsService.setLoading(false))
     ).subscribe(() => {
       FacebookLogin.logout();
