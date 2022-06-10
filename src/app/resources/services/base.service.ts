@@ -3,6 +3,7 @@ import { collectionData, Firestore } from '@angular/fire/firestore';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   DocumentReference,
   limit,
@@ -69,7 +70,9 @@ export class BaseService<T extends { uid?: string }> {
     );
   }
 
-  delete(uid: string): void {
-    collection(this.firestore, this.collectionName, uid);
+  delete(uid: string): Observable<void> {
+    return from(
+      deleteDoc(doc(this.firestore, this.collectionName, uid))
+    );
   }
 }

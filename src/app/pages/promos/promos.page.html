@@ -12,29 +12,33 @@
   </ion-fab>
 
   <div *ngFor="let promo of promos">
-    <ion-card class="ion-activatable ripple-parent" (click)="navigateToPromo(promo)">
+    <ion-card class="ion-activatable ripple-parent">
       <ion-ripple-effect></ion-ripple-effect>
 
-      <ion-card-header>
-        <div class="promo-store">
-          {{ promo.store }}
-        </div>
-        <div class="promo-product">
-          {{ promo.product }}
-        </div>
-      </ion-card-header>
-
-      <ion-card-content>
-        <div class="promo-body">
-          <div class="promo-price">R${{ promo.price }}</div>
-          <div class="promo-date">{{ promo.createdAt.toDate() | date: 'dd/MM/yyyy' }}</div>
-        </div>
-        <div class="promo-footer">
-          <div class="promo-address">
-            <ion-button size="small" [routerLink]="[promo.uid]">Ver endereço</ion-button>
+      <div (click)="navigateToPromo(promo)">
+        <ion-card-header>
+          <div class="promo-store">
+            {{ promo.store }}
           </div>
+          <div class="promo-product">
+            {{ promo.product }}
+          </div>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="promo-body">
+            <div class="promo-price">R${{ promo.price }}</div>
+            <div class="promo-date">{{ promo.createdAt.toDate() | date: 'dd/MM/yyyy' }}</div>
+          </div>
+        </ion-card-content>
+      </div>
+
+      <div class="promo-footer">
+        <div class="promo-address">
+          <ion-button size="small" color="danger" fill="clear" (click)="presentDeleteAlert(promo)">Excluir</ion-button>
+          <ion-button size="small" [routerLink]="[promo.uid]">Ver endereço</ion-button>
         </div>
-      </ion-card-content>
+      </div>
     </ion-card>
   </div>
 

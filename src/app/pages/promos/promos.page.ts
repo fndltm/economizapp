@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 import { UtilsService } from '@utils/utils.service';
 import { PromoService } from 'src/app/resources/services/promo.service';
 import { Promo } from '../../resources/models/promo';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-promos',
@@ -14,6 +15,7 @@ export class PromosPage {
   public promos: Promo[];
 
   constructor(
+    private alertController: AlertController,
     private router: Router,
     private promoService: PromoService,
     public utilsService: UtilsService,
@@ -62,6 +64,34 @@ export class PromosPage {
 
   navigateToPromo(promo: Promo): void {
     this.router.navigate(['promos', promo.uid]);
+  }
+
+  async presentDeleteAlert(promo: Promo): Promise<void> {
+    const alert = await this.alertController.create({
+      message: `Tem certeza que desejar excluir o item ${promo.product}?`,
+      header: 'Confirma a exclusão?',
+      buttons: [
+        'Cancelar',
+        {
+          text: 'Deletar',
+          handler: () => {
+            this.deletePromo(promo);
+          }
+        }
+      ]
+    });
+
+    alert.present();
+  }
+
+
+  deletePromo(promo: Promo): void {
+    this.promoService.delete(promo.uid).pipe(
+      take(1)
+    ).subscribe(() => {
+      this.ionViewDidEnter();
+      this.utilsService.presentSuccessToast('Deletado com sucesso!');
+    });
   }
 
 }
