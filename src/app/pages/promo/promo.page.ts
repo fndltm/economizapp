@@ -16,6 +16,7 @@ import { ImageUploadService } from '@services/image-upload.service';
 import { UserProfile } from '@models/user-profile';
 import { isPlatform } from '@ionic/angular';
 import { Camera as CameraMobile, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { CHIPS } from 'src/app/resources/constants/chip';
 
 @Component({
   selector: 'app-promo',
@@ -33,6 +34,9 @@ export class PromoPage implements OnInit {
 
   form: FormGroup;
   promo: Promo;
+
+  chips = CHIPS;
+
   isEditing = false;
   canEdit = false;
   user: UserProfile = {} as UserProfile;
@@ -116,6 +120,7 @@ export class PromoPage implements OnInit {
       uid: new FormControl({ value: this.promo?.uid, disabled: true }),
       store: new FormControl({ value: this.promo?.store, disabled: !this.isEditing }, [Validators.required]),
       product: new FormControl({ value: this.promo?.product, disabled: !this.isEditing }, [Validators.required]),
+      category: new FormControl({ value: this.promo?.category, disabled: !this.isEditing }, [Validators.required]),
       price: new FormControl({ value: this.promo?.price, disabled: !this.isEditing }, [Validators.required]),
       createdAt: new FormControl({ value: this.promo?.createdAt, disabled: true }),
       address: new FormControl({ value: this.promo?.address, disabled: !this.isEditing }, [Validators.required]),

@@ -11,11 +11,13 @@ import {
   OrderByDirection,
   query,
   startAfter,
-  updateDoc
+  updateDoc,
+  where
 } from 'firebase/firestore';
 import { docData } from 'rxfire/firestore';
 import { DocumentData } from 'rxfire/firestore/interfaces';
 import { from, Observable } from 'rxjs';
+import { Chip } from '../constants/chip';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +33,15 @@ export class BaseService<T extends { uid?: string }> {
   getOrderByLimit(orderByName: string, limitNumber: number, direction: OrderByDirection = 'asc'): Observable<T[]> {
     return collectionData(
       query(collection(this.firestore, this.collectionName), orderBy(orderByName, direction), limit(limitNumber)), { idField: 'uid' }
+    ) as Observable<T[]>;
+  }
+
+  getOrderByLimitCategory(orderByName: string, limitNumber: number, category: Chip, direction: OrderByDirection = 'asc'): Observable<T[]> {
+    return collectionData(
+      query(
+        collection(this.firestore, this.collectionName),
+        orderBy(orderByName, direction), limit(limitNumber),
+        where('category.value', '==', category.value)), { idField: 'uid' }
     ) as Observable<T[]>;
   }
 

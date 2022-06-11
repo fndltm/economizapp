@@ -5,6 +5,7 @@ import { UtilsService } from '@utils/utils.service';
 import { PromoService } from 'src/app/resources/services/promo.service';
 import { Promo } from '../../resources/models/promo';
 import { AlertController } from '@ionic/angular';
+import { Chip, CHIPS } from 'src/app/resources/constants/chip';
 
 @Component({
   selector: 'app-promos',
@@ -13,6 +14,8 @@ import { AlertController } from '@ionic/angular';
 })
 export class PromosPage {
   public promos: Promo[];
+
+  public chips = CHIPS;
 
   constructor(
     private alertController: AlertController,
@@ -62,6 +65,20 @@ export class PromosPage {
     }, 500);
   }
 
+  selectChip(chip: Chip): void {
+    if (chip.selected) {
+      this.chips.forEach(c => c.selected = false);
+      this.ionViewDidEnter();
+    } else {
+      this.chips.forEach(c => c.selected = false);
+      chip.selected = true;
+      this.promoService.getOrderByLimitCategory('createdAt', 5, chip, 'desc').pipe(take(1)).subscribe(promos => {
+        this.promos = [...promos];
+        this.utilsService.setLoading(false);
+      });
+    }
+  }
+
   navigateToPromo(promo: Promo): void {
     this.router.navigate(['promos', promo.uid]);
   }
@@ -93,5 +110,4 @@ export class PromosPage {
       this.utilsService.presentSuccessToast('Deletado com sucesso!');
     });
   }
-
 }

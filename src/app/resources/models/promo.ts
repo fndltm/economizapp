@@ -1,10 +1,11 @@
 import { PromoStatus } from '@enums/promo-status';
 import { Timestamp } from 'firebase/firestore';
+import { Chip } from '../constants/chip';
 
 export interface Promo {
   uid?: string;
   address?: string;
-  category?: string;
+  category?: Chip;
   createdAt?: Timestamp;
   createdBy?: string;
   observation?: string;

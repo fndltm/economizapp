@@ -1,3 +1,15 @@
+.chip-group {
+  margin: 10px;
+  padding-bottom: 5px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.selected {
+  opacity: 2 !important;
+}
+
 .promo-body {
   display: flex;
   justify-content: space-between;
@@ -13,8 +25,15 @@
   }
 }
 
-.promo-store {
-  font-size: 13px;
+.promo-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .promo-store {
+    font-size: 13px;
+  }
 }
 
 .promo-product {

@@ -34,6 +34,16 @@
           <ion-input formControlName="product" required placeholder="Produto"></ion-input>
           <span slot="error" *ngIf="utilsService.isFieldInvalid(form, 'product')">Preencha o campo corretamente</span>
         </div>
+        <div>
+          <ion-item>
+            <ion-label>Categoria</ion-label>
+            <ion-select placeholder="Selecione" formControlName="category">
+              <ng-container *ngFor="let chip of chips">
+                <ion-select-option [value]="chip">{{chip.label}}</ion-select-option>
+              </ng-container>
+            </ion-select>
+          </ion-item>
+        </div>
       </ion-card-header>
 
       <ion-card-content>
