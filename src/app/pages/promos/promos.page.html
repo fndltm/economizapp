@@ -21,45 +21,54 @@
     </ion-fab-button>
   </ion-fab>
 
-  <div *ngFor="let promo of promos">
-    <ion-card class="ion-activatable ripple-parent">
-      <ion-ripple-effect></ion-ripple-effect>
+  <ng-container *ngIf="userProfile$ | async as user">
+    <div *ngFor="let promo of promos">
+      <ion-card class="ion-activatable ripple-parent">
+        <ion-ripple-effect></ion-ripple-effect>
 
-      <div (click)="navigateToPromo(promo)">
-        <ion-card-header>
-          <div class="promo-header">
-            <div class="promo-store">
-              {{ promo.store }}
+        <div (click)="navigateToPromo(promo)">
+          <ion-card-header>
+            <div class="promo-header">
+              <div class="promo-store">
+                {{ promo.store }}
+              </div>
+              <ng-container *ngIf="promo?.category">
+                <ion-chip [ngStyle]="{'background-color': promo?.category?.backgroundColor}">
+                  <ion-icon [name]="promo?.category?.iconName" [color]="promo?.category?.iconColor"></ion-icon>
+                  <ion-label>{{ promo?.category?.label }}</ion-label>
+                </ion-chip>
+              </ng-container>
             </div>
-            <ng-container *ngIf="promo?.category">
-              <ion-chip [ngStyle]="{'background-color': promo?.category?.backgroundColor}">
-                <ion-icon [name]="promo?.category?.iconName" [color]="promo?.category?.iconColor"></ion-icon>
-                <ion-label>{{ promo?.category?.label }}</ion-label>
-              </ion-chip>
-            </ng-container>
-          </div>
 
-          <div class="promo-product">
-            {{ promo.product }}
-          </div>
-        </ion-card-header>
+            <div class="promo-product">
+              {{ promo.product }}
+            </div>
+          </ion-card-header>
 
-        <ion-card-content>
-          <div class="promo-body">
-            <div class="promo-price">R${{ promo.price }}</div>
-            <div class="promo-date">{{ promo.createdAt.toDate() | date: 'dd/MM/yyyy' }}</div>
-          </div>
-        </ion-card-content>
-      </div>
-
-      <div class="promo-footer">
-        <div class="promo-address">
-          <ion-button size="small" color="danger" fill="clear" (click)="presentDeleteAlert(promo)">Excluir</ion-button>
-          <ion-button size="small" [routerLink]="[promo.uid]">Ver endereço</ion-button>
+          <ion-card-content>
+            <div class="promo-body">
+              <div class="promo-price">R${{ promo.price }}</div>
+              <div class="promo-date">{{ promo.createdAt.toDate() | date: 'dd/MM/yyyy' }}</div>
+            </div>
+          </ion-card-content>
         </div>
-      </div>
-    </ion-card>
-  </div>
+
+        <div class="promo-footer">
+          <div class="promo-address">
+            <div>
+              <ng-container *ngIf="user.displayName === promo.createdBy">
+                <ion-button size="small" color="danger" fill="clear" (click)="presentDeleteAlert(promo)">
+                  Excluir
+                </ion-button>
+              </ng-container>
+            </div>
+
+            <ion-button size="small" [routerLink]="[promo.uid]">Ver endereço</ion-button>
+          </div>
+        </div>
+      </ion-card>
+    </div>
+  </ng-container>
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>

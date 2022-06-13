@@ -6,6 +6,7 @@ import { PromoService } from 'src/app/resources/services/promo.service';
 import { Promo } from '../../resources/models/promo';
 import { AlertController } from '@ionic/angular';
 import { Chip, CHIPS } from 'src/app/resources/constants/chip';
+import { UsersService } from '@services/users.service';
 
 @Component({
   selector: 'app-promos',
@@ -13,6 +14,7 @@ import { Chip, CHIPS } from 'src/app/resources/constants/chip';
   styleUrls: ['./promos.page.scss'],
 })
 export class PromosPage {
+  userProfile$ = this.usersService.currentUserProfile$;
   public promos: Promo[];
 
   public chips = CHIPS;
@@ -21,22 +23,9 @@ export class PromosPage {
     private alertController: AlertController,
     private router: Router,
     private promoService: PromoService,
+    private usersService: UsersService,
     public utilsService: UtilsService,
-  ) {
-    /* for (let index = 1; index < 16; index++) {
-      this.promoService.add({
-        address: 'address' + index,
-        category: 'category' + index,
-        createdAt: new Date(2022, 4, 16, index, index, index),
-        createdBy: 'createdBy' + index,
-        photo: 'photo' + index,
-        price: index,
-        product: 'product' + index,
-        status: PromoStatus.active,
-        store: 'store' + index,
-      }).subscribe();
-    } */
-  }
+  ) { }
 
   ionViewDidEnter(): void {
     this.promoService.getOrderByLimit('createdAt', 5, 'desc').pipe(take(1)).subscribe(promos => {
