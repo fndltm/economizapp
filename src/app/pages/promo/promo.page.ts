@@ -16,7 +16,7 @@ import { ImageUploadService } from '@services/image-upload.service';
 import { UserProfile } from '@models/user-profile';
 import { isPlatform } from '@ionic/angular';
 import { Camera as CameraMobile, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
-import { CHIPS } from 'src/app/resources/constants/chip';
+import { Chip, CHIPS } from 'src/app/resources/constants/chip';
 
 @Component({
   selector: 'app-promo',
@@ -344,4 +344,6 @@ export class PromoPage implements OnInit {
       return this.imagePath;
     }
   }
+
+  compareWithFn = (o1: Chip, o2: Chip) => o1 && o2 ? o1.value === o2.value : o1 === o2;
 }
