@@ -37,7 +37,7 @@
         <div>
           <ion-item>
             <ion-label>Categoria</ion-label>
-            <ion-select placeholder="Selecione" formControlName="category">
+            <ion-select placeholder="Selecione" interface="popover" formControlName="category">
               <ng-container *ngFor="let chip of chips">
                 <ion-select-option [value]="chip">{{chip.label}}</ion-select-option>
               </ng-container>
