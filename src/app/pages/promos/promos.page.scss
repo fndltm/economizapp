@@ -25,6 +25,14 @@
   }
 }
 
+.empty-promo {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .promo-header {
   width: 100%;
   display: flex;

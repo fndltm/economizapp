@@ -21,9 +21,9 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ng-container *ngIf="userProfile$ | async as user">
+  <ng-container>
     <div *ngFor="let promo of promos">
-      <ion-card class="ion-activatable ripple-parent">
+      <ion-card class="ion-activatable ripple-parent" *ngIf="promo">
         <ion-ripple-effect></ion-ripple-effect>
 
         <div (click)="navigateToPromo(promo)">
@@ -56,10 +56,12 @@
         <div class="promo-footer">
           <div class="promo-address">
             <div>
-              <ng-container *ngIf="user.displayName === promo.createdBy">
-                <ion-button size="small" color="danger" fill="clear" (click)="presentDeleteAlert(promo)">
-                  Excluir
-                </ion-button>
+              <ng-container *ngIf="userProfile$ | async as user">
+                <ng-container *ngIf="user.displayName === promo.createdBy">
+                  <ion-button size="small" color="danger" fill="clear" (click)="presentDeleteAlert(promo)">
+                    Excluir
+                  </ion-button>
+                </ng-container>
               </ng-container>
             </div>
 
@@ -67,6 +69,12 @@
           </div>
         </div>
       </ion-card>
+    </div>
+
+    <div *ngIf="noResults && !promos?.length" class="empty-promo">
+      <img src="../../../assets/empty.png" height="270" width="270"/>
+      <ion-label *ngIf="chipSelected">Nao há promoções para a categoria {{chipSelected}}</ion-label>
+      <ion-label *ngIf="!chipSelected">Nao há promoções cadastradas ainda :(</ion-label>
     </div>
   </ng-container>
 

@@ -18,6 +18,8 @@ export class PromosPage {
   public promos: Promo[];
 
   public chips = CHIPS;
+  public chipSelected: string = '';
+  public noResults : boolean = false;
 
   constructor(
     private alertController: AlertController,
@@ -28,42 +30,73 @@ export class PromosPage {
   ) { }
 
   ionViewDidEnter(): void {
+    this.chips.forEach(c => c.selected = false);
+
     this.promoService.getOrderByLimit('createdAt', 5, 'desc').pipe(take(1)).subscribe(promos => {
-      this.promos = [...promos];
-      this.utilsService.setLoading(false);
+      if (promos.length > 0) {
+        this.promos = [...promos];
+        this.noResults = false;
+        this.utilsService.setLoading(false);
+      } else {
+        this.promos = [];
+        this.noResults = true;
+      }
     });
   }
 
   doRefresh(event): void {
     this.promoService.getOrderByLimit('createdAt', 5, 'desc').pipe(take(1)).subscribe(promos => {
-      this.promos = [...promos];
-      event.target.complete();
-      this.utilsService.setLoading(false);
+      if (promos.length > 0) {
+        this.noResults = false;
+        this.promos = [...promos];
+        event.target.complete();
+        this.utilsService.setLoading(false);
+      } else {
+        this.promos = [];
+        this.noResults = true;
+      }
     });
   }
 
   loadData(event): void {
-    setTimeout(() => {
-      this.promoService.getOrderByStartAfterLimit('createdAt', this.promos[this.promos.length - 1].createdAt, 5, 'desc')
-        .pipe(
-          take(1)
-        ).subscribe(promos => {
-          this.promos.push(...promos);
-          event.target.complete();
-        });
-    }, 500);
+    if (this.promos.length > 0) {
+      setTimeout(() => {
+        this.promoService.getOrderByStartAfterLimit('createdAt', this.promos[this.promos.length - 1].createdAt, 5, 'desc')
+          .pipe(
+            take(1)
+          ).subscribe(promos => {
+            if (promos.length > 0) {
+              this.promos.push(...promos);
+              this.noResults = false;
+              event.target.complete();
+            } else {
+              this.promos = [];
+              this.noResults = true;
+            }
+          });
+      }, 500);
+    } else {
+      event.target.complete();
+    }
   }
 
   selectChip(chip: Chip): void {
     if (chip.selected) {
+      this.chipSelected = '';
       this.chips.forEach(c => c.selected = false);
       this.ionViewDidEnter();
     } else {
+      this.chipSelected = chip.label;
       this.chips.forEach(c => c.selected = false);
       chip.selected = true;
       this.promoService.getOrderByLimitCategory('createdAt', 5, chip, 'desc').pipe(take(1)).subscribe(promos => {
-        this.promos = [...promos];
-        this.utilsService.setLoading(false);
+        if (promos.length > 0) {
+          this.promos = [...promos];
+          this.utilsService.setLoading(false);
+        } else {
+          this.promos = [];
+          this.noResults = true;
+        }
       });
     }
   }
